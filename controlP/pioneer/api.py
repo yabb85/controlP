@@ -1,9 +1,9 @@
 from re import match as re_match
-from socket import socket
-from socket import AF_INET
-from socket import SOCK_STREAM
+from socket import AF_INET, SOCK_STREAM, socket
 from socket import timeout as exception_timeout
 from time import sleep
+
+
 """
 Module to communicate with Pioneer N-50A
 
@@ -93,6 +93,7 @@ screen play:
 class Pioneer(object):
     """
     """
+
     def __init__(self, ip, port):
         super(Pioneer, self).__init__()
         self.ip = ip
@@ -123,7 +124,7 @@ class Pioneer(object):
         return response.decode('utf-8')
 
     def clean_buffer(self):
-        self.socket.settimeout(0.5)
+        self.socket.settimeout(0.3)
         try:
             while True:
                 self.read()
@@ -148,7 +149,7 @@ class Pioneer(object):
     def ampli_power(self):
         """
         """
-        self.send_command('0A51CFFFFROI')
+        self.send_command('0A51CFFFFROI', False)
 
     def power_status(self):
         """
@@ -194,7 +195,7 @@ class Pioneer(object):
         self.clean_buffer()
         response = self.send_command('?GAP')
         # if 'GBP08\r\n' == response or 'GBP02\r\n' == response or 'GBP03\r\n' == response:
-            # response += self.read()
+        # response += self.read()
         if re_match('^GBP0.\r\n$', response):
             sleep(0.1)
             response += self.read()
@@ -213,7 +214,9 @@ class Pioneer(object):
         result = {}
         string = response.split('\r\n')
         gdc_pattern = r'GCP(?P<type>..)(?P<view>.)(?P<top>.)(?P<unknown1>.)(?P<return>.)(?P<unknown2>.)(?P<shuffle>.)(?P<repeat>.)(?P<unknown3>.)(?P<unknown4>.)(?P<vue>...)(?P<play>.)(?P<unknown5>..)"(?P<title>.*)"'
-        gdp_pattern = r'GDP(?P<begin_disp>.....)(?P<end_disp>.....)(?P<total_line>.....)'
+        gdp_pattern = (
+            r'GDP(?P<begin_disp>.....)(?P<end_disp>.....)(?P<total_line>.....)'
+        )
         gep_pattern = r'GEP(?P<number>..)(?P<highlight>.)(?P<tag>..)"(?P<value>.*)"'
         gic_pattern = r'GIC(?P<img>...)"(?P<url>.*)"'
         for line in string:
@@ -230,7 +233,7 @@ class Pioneer(object):
                 status = match.groupdict()
                 # result.update(status)
                 result.setdefault('lines', {})
-                result['lines'][status['number']] = status
+                result['lines'][int(status['number'])] = status
             match = re_match(gic_pattern, line)
             if match:
                 status = match.groupdict()
@@ -268,10 +271,10 @@ class Pioneer(object):
         self.send_command('35PB')
 
     def volume_down(self):
-        self.send_command('0A50BFFFFROI')
+        self.send_command('0A50BFFFFROI', False)
 
     def volume_up(self):
-        self.send_command('0A50AFFFFROI')
+        self.send_command('0A50AFFFFROI', False)
 
     def select_line(self, nb):
         """
