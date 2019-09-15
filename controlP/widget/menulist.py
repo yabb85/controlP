@@ -28,12 +28,12 @@ class MenuList(Gtk.Box):
         return row
 
     def _on_row_activated(self, listbox, row):
-        self._coremodel.emit('player-set-line-event', int(row.value))
+        self._coremodel.emit('network-player-set-line-event', int(row.value))
 
     @Gtk.Template.Callback()
     def _on_up_button_clicked(self, button):
-        self._coremodel.emit('player-select-line-event', self._coremenu.props.begin - 8)
+        self._coremodel.emit('network-player-select-line-event', self._coremenu.props.begin - 8)
 
     @Gtk.Template.Callback()
     def _on_down_button_clicked(self, button):
-        self._coremodel.emit('player-select-line-event', self._coremenu.props.end + 1)
+        self._coremodel.emit('network-player-select-line-event', self._coremenu.props.end + 1)

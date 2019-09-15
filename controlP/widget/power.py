@@ -17,9 +17,9 @@ class Power(Gtk.Box):
     def __init__(self, model):
         super().__init__()
         self._coremodel = model
-        self._coremodel.connect('player-power-status-event', self.on_power_status_event)
+        self._coremodel.connect('network-player-power-status-event', self.on_power_status_event)
         self.bind_property('activated', self._player_power_switch, 'active')
-        self._coremodel.emit('player-get-status-event')
+        self._coremodel.emit('network-player-get-status-event')
 
     @Gtk.Template.Callback()
     def _on_ampli_power_clicked(self, button):
@@ -35,7 +35,7 @@ class Power(Gtk.Box):
 
     @Gtk.Template.Callback()
     def _on_player_power_activated(self, switch, gparam):
-        self._coremodel.emit('player-power-event', switch.get_active())
+        self._coremodel.emit('network-player-power-event', switch.get_active())
 
     def on_power_status_event(self, signal, val):
         print('on_player_power_status_event : {}'.format(val))

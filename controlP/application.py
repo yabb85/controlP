@@ -8,30 +8,6 @@ MENU_XML = """
 <interface>
   <menu id="app-menu">
     <section>
-      <attribute name="label" translatable="yes">Change label</attribute>
-      <item>
-        <attribute name="action">win.change_label</attribute>
-        <attribute name="target">String 1</attribute>
-        <attribute name="label" translatable="yes">String 1</attribute>
-      </item>
-      <item>
-        <attribute name="action">win.change_label</attribute>
-        <attribute name="target">String 2</attribute>
-        <attribute name="label" translatable="yes">String 2</attribute>
-      </item>
-      <item>
-        <attribute name="action">win.change_label</attribute>
-        <attribute name="target">String 3</attribute>
-        <attribute name="label" translatable="yes">String 3</attribute>
-      </item>
-    </section>
-    <section>
-      <item>
-        <attribute name="action">win.maximize</attribute>
-        <attribute name="label" translatable="yes">Maximize</attribute>
-      </item>
-    </section>
-    <section>
       <item>
         <attribute name="action">app.about</attribute>
         <attribute name="label" translatable="yes">_About</attribute>
@@ -86,7 +62,7 @@ class Application(Gtk.Application):
 
     def do_activate(self):
         if not self._window:
-            self._window = Window(application=self, title="toto")
+            self._window = Window(application=self, title="controlP")
         self._window.present()
 
     def on_about(self, action, param):

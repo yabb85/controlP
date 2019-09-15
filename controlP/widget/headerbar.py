@@ -11,4 +11,4 @@ class HeaderBar(Gtk.HeaderBar):
 
     @Gtk.Template.Callback()
     def _on_ret_button_clicked(self, button):
-        self._coremodel.emit('player-return-event')
+        self._coremodel.emit('network-player-return-event')

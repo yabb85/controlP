@@ -17,4 +17,4 @@ class Menu(Gtk.Box):
         self.pack_start(self.menu_list, True, True, 0)
         self.cover = Cover(self._coremodel.props.coresong)
         self.pack_start(self.cover, True, True, 0)
-        self._coremodel.emit('player-screen-get-status-event')
+        self._coremodel.emit('network-player-screen-get-status-event')

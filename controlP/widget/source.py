@@ -22,9 +22,11 @@ class Source(Gtk.Box):
 
         self._coremodel = coremodel
         self._model = coremodel.props.coresource
-        self._coremodel.connect('player-input-status-event', self.on_input_status_event)
+        self._coremodel.connect(
+            'network-player-input-status-event', self.on_input_status_event
+        )
         self._source_list.bind_model(self._model, self._create_row)
-        self._coremodel.emit('player-input-get-status-event')
+        self._coremodel.emit('network-player-input-get-status-event')
         self.show_all()
 
     def _create_row(self, source_model):
@@ -33,12 +35,13 @@ class Source(Gtk.Box):
     @Gtk.Template.Callback()
     def _on_selected_row_changed(self, listbox):
         row = listbox.get_selected_row()
-        if row.value != self._model.props.sources[self._current].val:
-            self._coremodel.emit('player-input-event', row.value)
+        if row.value != self._current:
+            self._coremodel.emit('network-player-input-event', row.value)
+            self._current = row.value
 
     def on_input_status_event(self, signal, value):
-        self._current = value
         toto = self._model.props.sources[value]
         for row in self._source_list:
             if row.value == toto.props.val:
+                self._current = row.value
                 self._source_list.select_row(row)
