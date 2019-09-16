@@ -1,3 +1,6 @@
+from threading import Event, Thread, Timer
+from time import sleep
+
 from gi.repository import Gio, GObject, Gtk
 
 from .coremodel import CoreModel
@@ -23,6 +26,21 @@ MENU_XML = """
 """
 
 
+class RefreshScreen(Thread):
+    def __init__(self, coremodel, duration=1.0):
+        super().__init__()
+        self._coremodel = coremodel
+        self._stop = Event()
+        self.duration = duration
+
+    def run(self):
+        while not self._stop.wait(self.duration):
+            self._coremodel.do_network_player_screen_get_status_event()
+
+    def cancel(self):
+        self._stop.set()
+
+
 class Application(Gtk.Application):
     def __init__(self, *args, **kwargs):
         super().__init__(
@@ -33,6 +51,7 @@ class Application(Gtk.Application):
         )
         self._window = None
         self._coremodel = CoreModel()
+        self._screen_refresh = RefreshScreen(self._coremodel, 5.0)
 
     @GObject.Property(type=CoreModel, flags=GObject.ParamFlags.READABLE)
     def coremodel(self):
@@ -60,10 +79,15 @@ class Application(Gtk.Application):
         builder = Gtk.Builder.new_from_string(MENU_XML, -1)
         self.set_app_menu(builder.get_object('app-menu'))
 
+    def do_shutdown(self):
+        self._screen_refresh.cancel()
+        Gtk.Application.do_shutdown(self)
+
     def do_activate(self):
         if not self._window:
             self._window = Window(application=self, title="controlP")
         self._window.present()
+        self._screen_refresh.start()
 
     def on_about(self, action, param):
         about_dialog = Gtk.AboutDialog(transient_for=self.window, modal=True)

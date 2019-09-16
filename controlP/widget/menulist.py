@@ -24,6 +24,8 @@ class MenuList(Gtk.Box):
 
     def _create_row(self, menu_model):
         row = ListBoxRowSource(menu_model.props.text, menu_model.props.line_idx)
+        if menu_model.props.line_idx == self._coremenu.highlight:
+            self._menu_list.select_row(row)
         row.show_all()
         return row
 
@@ -32,8 +34,10 @@ class MenuList(Gtk.Box):
 
     @Gtk.Template.Callback()
     def _on_up_button_clicked(self, button):
-        self._coremodel.emit('network-player-select-line-event', self._coremenu.props.begin - 8)
+        value = max(self._coremenu.props.begin - 8, 1)
+        self._coremodel.emit('network-player-select-line-event', value)
 
     @Gtk.Template.Callback()
     def _on_down_button_clicked(self, button):
-        self._coremodel.emit('network-player-select-line-event', self._coremenu.props.end + 1)
+        value = min(self._coremenu.props.end + 1, self._coremenu.props.total)
+        self._coremodel.emit('network-player-select-line-event', value)

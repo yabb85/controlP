@@ -1,12 +1,15 @@
-from gi.repository import GObject
 from json import dumps
 from logging import debug as log_debug
+from threading import Lock
 from time import sleep
+
+from gi.repository import GObject
 
 from .coremenu import CoreMenu
 from .coresong import CoreSong
 from .coresource import CoreSource
 from .pioneer import Pioneer
+
 
 class CoreModel(GObject.GObject):
 
@@ -25,7 +28,11 @@ class CoreModel(GObject.GObject):
     __gsignals__ = {
         'network-player-get-status-event': (GObject.SIGNAL_RUN_FIRST, None, ()),
         'network-player-power-event': (GObject.SIGNAL_RUN_FIRST, None, (bool,)),
-        'network-player-power-status-event': (GObject.SignalFlags.RUN_FIRST, None, (bool,)),
+        'network-player-power-status-event': (
+            GObject.SignalFlags.RUN_FIRST,
+            None,
+            (bool,),
+        ),
         'network-player-power-get-status-event': (GObject.SIGNAL_RUN_FIRST, None, ()),
         'network-player-input-event': (GObject.SIGNAL_RUN_FIRST, None, (int,)),
         'network-player-input-status-event': (GObject.SIGNAL_RUN_FIRST, None, (str,)),
@@ -47,6 +54,7 @@ class CoreModel(GObject.GObject):
         self._coresource = CoreSource(self._sources)
         self._coremenu = CoreMenu()
         self._network_player = Pioneer('192.168.1.100', 8102)
+        self.locker = Lock()
 
     @GObject.Property(type=CoreSong, flags=GObject.ParamFlags.READABLE)
     def coresong(self):
@@ -98,17 +106,18 @@ class CoreModel(GObject.GObject):
         log_debug('do_screen_status_event : {}'.format(value))
 
     def do_network_player_screen_get_status_event(self):
-        status = self._network_player.screen_status()
-        if status and status.get('type', None) == 2:
-            self._coresong.update(status, True)
-            self._coremenu.update(status, False)
-        else:
-            self._coresong.update(status, False)
-            self._coremenu.update(status, True)
-
+        with self.locker:
+            status = self._network_player.screen_status()
+            if status and status.get('type', None) == '02':
+                img_url = self._network_player.img_status()
+                status.update(img_url)
+                self._coresong.update(status, True)
+                self._coremenu.update(status, False)
+            elif status and status.get('type', None) == '01':
+                self._coresong.update(status, False)
+                self._coremenu.update(status, True)
 
     def do_network_player_select_line_event(self, value):
-        print(value)
         self._network_player.select_line(value)
         self.emit('network-player-screen-get-status-event')
 

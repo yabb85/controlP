@@ -1,3 +1,5 @@
+from threading import RLock
+
 from gi.repository import Gio, GObject
 
 
@@ -6,7 +8,7 @@ class MenuModel(GObject.GObject):
     """
 
     text = GObject.Property(type=str)
-    line_idx = GObject.Property(type=str)
+    line_idx = GObject.Property(type=int)
 
     def __init__(self, text, line_idx):
         super().__init__()
@@ -24,21 +26,49 @@ class CoreMenu(Gio.ListStore):
     visible = GObject.Property(type=bool, default=True)
     up_visible = GObject.Property(type=bool, default=True)
     down_visible = GObject.Property(type=bool, default=True)
+    highlight = GObject.Property(type=int)
 
     def __init__(self):
         super().__init__()
+        self.locker = RLock()
+        self._previous_status = {}
 
     def update(self, status, visibility):
         self.visible = visibility
-        if self.visible and status:
+        if not self.visible or not status:
+            return
+        shared_items = {
+            k: status[k]
+            for k in status
+            if k in self._previous_status and status[k] == self._previous_status[k]
+        }
+        if self._previous_status and len(shared_items) == len(self._previous_status):
+            return
+        with self.locker:
+            begin = status.get('begin_disp', None)
+            if begin:
+                self.begin = int(begin)
+            else:
+                self.begin = 0
+            end = status.get('end_disp', None)
+            if end:
+                self.end = int(end)
+            else:
+                self.end = 0
+            total = status.get('total_line', None)
+            if total:
+                self.total = int(total)
+            else:
+                self.total = 0
             self.remove_all()
-            self.begin = int(status.get('begin_disp', None))
-            self.end = int(status.get('end_disp', None))
-            self.total = int(status.get('total_line', None))
             lines = status.get('lines', {})
             for key, value in lines.items():
                 text = value.get('value', None)
-                row = MenuModel(text, key)
+                index = key + self.begin - 1
+                if value.get('highlight', '0') == '1':
+                    self.highlight = index
+                row = MenuModel(text, index)
                 self.append(row)
             self.up_visible = self.begin != 1
             self.down_visible = self.end != self.total
+        self._previous_status = status

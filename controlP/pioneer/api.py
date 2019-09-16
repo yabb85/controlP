@@ -1,6 +1,7 @@
 from re import match as re_match
 from socket import AF_INET, SOCK_STREAM, socket
 from socket import timeout as exception_timeout
+from threading import RLock
 from time import sleep
 
 
@@ -101,6 +102,7 @@ class Pioneer(object):
         self.socket = socket(AF_INET, SOCK_STREAM)
         # self.socket.setblocking(False)
         self.socket.connect((self.ip, self.port))
+        self.locker = RLock()
 
     def close(self):
         """
@@ -108,68 +110,71 @@ class Pioneer(object):
         """
         self.socket.close()
 
-    def send_command(self, command, rep_flag=True):
+    def _send_command(self, command, rep_flag=True):
         """docstring for send_command"""
-        formatted = u'{command}\r'.format(command=command)
-        self.socket.send(formatted.encode('utf-8'))
-        response = None
-        if rep_flag:
-            response = self.read()
-        return response
+        with self.locker:
+            formatted = u'{command}\r'.format(command=command)
+            self.socket.send(formatted.encode('utf-8'))
+            response = None
+            if rep_flag:
+                response = self._read()
+            return response
 
-    def read(self):
+    def _read(self):
         """
         """
-        response = self.socket.recv(99999999)
-        return response.decode('utf-8')
+        with self.locker:
+            response = self.socket.recv(99999999)
+            return response.decode('utf-8')
 
-    def clean_buffer(self):
-        self.socket.settimeout(0.3)
-        try:
-            while True:
-                self.read()
-        except exception_timeout as socket_timeout:
-            pass
-        finally:
-            self.socket.settimeout(None)
+    def _clean_buffer(self):
+        with self.locker:
+            self.socket.settimeout(0.3)
+            try:
+                while True:
+                    self._read()
+            except exception_timeout as socket_timeout:
+                pass
+            finally:
+                self.socket.settimeout(None)
 
     def power_on(self):
         """
         Start player
         """
         if self.power_status() == 'PWR2':
-            self.send_command('PO')
+            self._send_command('PO')
 
     def power_off(self):
         """
         Stop player
         """
-        self.send_command('PF')
+        self._send_command('PF')
 
     def ampli_power(self):
         """
         """
-        self.send_command('0A51CFFFFROI', False)
+        self._send_command('0A51CFFFFROI', False)
 
     def power_status(self):
         """
         Status of power player
         """
-        response = self.send_command('?P')
+        response = self._send_command('?P')
         return response.strip()
 
     def volume_status(self):
         """
         Read the volume status of Hi-Fi
         """
-        response = self.send_command('?V')
+        response = self._send_command('?V')
         return response.strip()
 
     def input_status(self):
         """
         Return name of current input selected by network player
         """
-        response = self.send_command('?F')
+        response = self._send_command('?F')
         status = ''
         if 'FN13' in response:
             status = 'DAC'
@@ -192,20 +197,20 @@ class Pioneer(object):
         return status
 
     def screen_status(self):
-        self.clean_buffer()
-        response = self.send_command('?GAP')
+        self._clean_buffer()
+        response = self._send_command('?GAP')
         # if 'GBP08\r\n' == response or 'GBP02\r\n' == response or 'GBP03\r\n' == response:
         # response += self.read()
         if re_match('^GBP0.\r\n$', response):
             sleep(0.1)
-            response += self.read()
+            response += self._read()
         result = self.parse_menu_response(response)
         return result
 
     def img_status(self):
         """
         """
-        response = self.send_command('?GIC')
+        response = self._send_command('?GIC')
         return self.parse_menu_response(response)
 
     def parse_menu_response(self, response):
@@ -243,53 +248,53 @@ class Pioneer(object):
     def play(self):
         """
         """
-        self.send_command('10PB')
+        self._send_command('10PB')
 
     def pause(self):
         """
         """
-        self.send_command('11PB')
+        self._send_command('11PB')
 
     def previous(self):
-        self.send_command('12PB')
+        self._send_command('12PB')
 
     def next(self):
-        self.send_command('13PB')
+        self._send_command('13PB')
 
     def stop(self):
-        self.send_command('20PB')
+        self._send_command('20PB')
 
     def enter(self):
         """
         """
-        self.send_command('30PB')
+        self._send_command('30PB')
 
     def ret(self):
-        self.send_command('31PB')
+        self._send_command('31PB')
 
     def shuffle(self):
-        self.send_command('35PB')
+        self._send_command('35PB')
 
     def volume_down(self):
-        self.send_command('0A50BFFFFROI', False)
+        self._send_command('0A50BFFFFROI', False)
 
     def volume_up(self):
-        self.send_command('0A50AFFFFROI', False)
+        self._send_command('0A50AFFFFROI', False)
 
     def select_line(self, nb):
         """
         """
-        self.send_command('{:05d}GGP'.format(nb))
+        self._send_command('{:05d}GGP'.format(nb))
 
     def set_line(self, nb):
         """
         """
-        self.send_command('{:05d}GHP'.format(nb))
+        self._send_command('{:05d}GHP'.format(nb))
 
     def set_input(self, input):
         """
         """
-        self.send_command('{0}FN'.format(input))
+        self._send_command('{0}FN'.format(input))
 
 
 def main():
