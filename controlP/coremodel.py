@@ -6,6 +6,7 @@ from time import sleep
 from gi.repository import GObject
 
 from .coremenu import CoreMenu
+from .corepower import CorePower
 from .coresong import CoreSong
 from .coresource import CoreSource
 from .pioneer import Pioneer
@@ -42,6 +43,13 @@ class CoreModel(GObject.GObject):
         'network-player-select-line-event': (GObject.SIGNAL_RUN_FIRST, None, (int,)),
         'network-player-set-line-event': (GObject.SIGNAL_RUN_FIRST, None, (int,)),
         'network-player-return-event': (GObject.SIGNAL_RUN_FIRST, None, ()),
+        'network-player-previous-event': (GObject.SIGNAL_RUN_FIRST, None, ()),
+        'network-player-play-event': (GObject.SIGNAL_RUN_FIRST, None, ()),
+        'network-player-pause-event': (GObject.SIGNAL_RUN_FIRST, None, ()),
+        'network-player-stop-event': (GObject.SIGNAL_RUN_FIRST, None, ()),
+        'network-player-next-event': (GObject.SIGNAL_RUN_FIRST, None, ()),
+        'network-player-shuffle-event': (GObject.SIGNAL_RUN_FIRST, None, ()),
+        'network-player-repeat-event': (GObject.SIGNAL_RUN_FIRST, None, ()),
         'ampli-power-event': (GObject.SIGNAL_RUN_FIRST, None, ()),
         'ampli-volume-down-event': (GObject.SIGNAL_RUN_FIRST, None, ()),
         'ampli-volume-up-event': (GObject.SIGNAL_RUN_FIRST, None, ()),
@@ -53,6 +61,7 @@ class CoreModel(GObject.GObject):
         self._coresong = CoreSong()
         self._coresource = CoreSource(self._sources)
         self._coremenu = CoreMenu()
+        self._corepower = CorePower()
         self._network_player = Pioneer('192.168.1.100', 8102)
         self.locker = Lock()
 
@@ -68,28 +77,33 @@ class CoreModel(GObject.GObject):
     def coremenu(self):
         return self._coremenu
 
+    @GObject.Property(type=CorePower, flags=GObject.ParamFlags.READABLE)
+    def corepower(self):
+        return self._corepower
+
     def do_network_player_get_status_event(self):
+        log_debug('do_network_player_get_status_event')
         self.emit('network-player-power-get-status-event')
         self.emit('network-player-input-get-status-event')
         self.emit('network-player-screen-get-status-event')
 
     def do_network_player_power_event(self, arg):
+        log_debug('do_network_player_power_event : {}'.format(arg))
         if self._network_player:
             if arg:
                 self._network_player.power_on()
+                self._corepower.props.network_player_active = True
             else:
                 self._network_player.power_off()
-
-    def do_network_player_power_status_event(self, arg):
-        print('do_player_power_status_event : {}'.format(arg))
+                self._corepower.props.network_player_active = False
 
     def do_network_player_power_get_status_event(self):
         log_debug('do_player_power_event')
         status = self._network_player.power_status()
-        log_debug('status : {}'.format(status))
+        log_debug('power status : {}'.format(status))
         state = status == 'PWR0'
-        log_debug('get_state : {}'.format(state))
-        self.emit('network-player-power-status-event', state)
+        log_debug('power get_state : {}'.format(state))
+        self._corepower.props.network_player_active = state
 
     def do_network_player_input_event(self, value):
         self._network_player.set_input(value)
@@ -106,16 +120,35 @@ class CoreModel(GObject.GObject):
         log_debug('do_screen_status_event : {}'.format(value))
 
     def do_network_player_screen_get_status_event(self):
+        log_debug('do_network_player_screen_get_status_event')
         with self.locker:
+            log_debug(
+                'network player powered : {}'.format(
+                    self.props.corepower.props.network_player_active
+                )
+            )
+            if not self._corepower.props.network_player_active:
+                self._coresong.update(None, False)
+                self._coremenu.update(None, False)
+                return
             status = self._network_player.screen_status()
-            if status and status.get('type', None) == '02':
+            log_debug('screen status : {}'.format(status))
+            if not status:
+                self._coresong.update(None, False)
+                self._coremenu.update(None, False)
+                return
+            view_type = status.get('type', None)
+            if view_type and (view_type == '02' or view_type == '03'):
                 img_url = self._network_player.img_status()
                 status.update(img_url)
                 self._coresong.update(status, True)
                 self._coremenu.update(status, False)
-            elif status and status.get('type', None) == '01':
+            elif view_type and view_type == '01':
                 self._coresong.update(status, False)
                 self._coremenu.update(status, True)
+            else:
+                self._coresong.update(None, False)
+                self._coremenu.update(None, False)
 
     def do_network_player_select_line_event(self, value):
         self._network_player.select_line(value)
@@ -127,6 +160,34 @@ class CoreModel(GObject.GObject):
 
     def do_network_player_return_event(self):
         self._network_player.ret()
+        self.emit('network-player-screen-get-status-event')
+
+    def do_network_player_previous_event(self):
+        self._network_player.previous()
+        self.emit('network-player-screen-get-status-event')
+
+    def do_network_player_play_event(self):
+        self._network_player.play()
+        self.emit('network-player-screen-get-status-event')
+
+    def do_network_player_pause_event(self):
+        self._network_player.pause()
+        self.emit('network-player-screen-get-status-event')
+
+    def do_network_player_stop_event(self):
+        self._network_player.stop()
+        self.emit('network-player-screen-get-status-event')
+
+    def do_network_player_next_event(self):
+        self._network_player.next()
+        self.emit('network-player-screen-get-status-event')
+
+    def do_network_player_shuffle_event(self):
+        self._network_player.shuffle()
+        self.emit('network-player-screen-get-status-event')
+
+    def do_network_player_repeat_event(self):
+        self._network_player.repeat()
         self.emit('network-player-screen-get-status-event')
 
     def do_ampli_power_event(self):

@@ -68,6 +68,7 @@ screen type:
     00 : error
     01 : list
     02 : file info
+    03 : file info with pause
     06 : loading
 
 screen vue:
@@ -218,16 +219,19 @@ class Pioneer(object):
         """
         result = {}
         string = response.split('\r\n')
-        gdc_pattern = r'GCP(?P<type>..)(?P<view>.)(?P<top>.)(?P<unknown1>.)(?P<return>.)(?P<unknown2>.)(?P<shuffle>.)(?P<repeat>.)(?P<unknown3>.)(?P<unknown4>.)(?P<vue>...)(?P<play>.)(?P<unknown5>..)"(?P<title>.*)"'
+        gcp_pattern = r'GCP(?P<type>..)(?P<view>.)(?P<top>.)(?P<unknown1>.)(?P<return>.)(?P<unknown2>.)(?P<shuffle>.)(?P<repeat>.)(?P<unknown3>.)(?P<unknown4>.)(?P<vue>...)(?P<play>.)(?P<unknown5>..)"(?P<title>.*)"'
         gdp_pattern = (
             r'GDP(?P<begin_disp>.....)(?P<end_disp>.....)(?P<total_line>.....)'
         )
         gep_pattern = r'GEP(?P<number>..)(?P<highlight>.)(?P<tag>..)"(?P<value>.*)"'
         gic_pattern = r'GIC(?P<img>...)"(?P<url>.*)"'
         for line in string:
-            match = re_match(gdc_pattern, line)
+            match = re_match(gcp_pattern, line)
             if match:
                 status = match.groupdict()
+                status['shuffle'] = int(status['shuffle'])
+                status['repeat'] = int(status['repeat'])
+                status['play'] = int(status['play'])
                 result.update(status)
             match = re_match(gdp_pattern, line)
             if match:
@@ -271,6 +275,9 @@ class Pioneer(object):
 
     def ret(self):
         self._send_command('31PB')
+
+    def repeat(self):
+        self._send_command('34PB')
 
     def shuffle(self):
         self._send_command('35PB')

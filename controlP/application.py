@@ -1,7 +1,8 @@
+from logging import debug as log_debug
 from threading import Event, Thread, Timer
 from time import sleep
 
-from gi.repository import Gio, GObject, Gtk
+from gi.repository import Gdk, Gio, GObject, Gtk
 
 from .coremodel import CoreModel
 from .widget.window import ControlpWindow as Window
@@ -43,15 +44,29 @@ class RefreshScreen(Thread):
 
 class Application(Gtk.Application):
     def __init__(self, *args, **kwargs):
+        log_debug('initialize application')
         super().__init__(
             *args,
-            application_id="org.toto",
+            application_id="org.controlp",
             flags=Gio.ApplicationFlags.FLAGS_NONE,
             **kwargs
         )
+        self._init_style()
+
         self._window = None
         self._coremodel = CoreModel()
         self._screen_refresh = RefreshScreen(self._coremodel, 5.0)
+        log_debug('application initialized')
+
+    def _init_style(self):
+        log_debug('init style')
+        css_provider = Gtk.CssProvider()
+        css_provider.load_from_path('controlP/ui/app.css')
+        screen = Gdk.Screen.get_default()
+        style_context = Gtk.StyleContext()
+        style_context.add_provider_for_screen(
+            screen, css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        )
 
     @GObject.Property(type=CoreModel, flags=GObject.ParamFlags.READABLE)
     def coremodel(self):
@@ -62,6 +77,7 @@ class Application(Gtk.Application):
         return self._window
 
     def quit(self, action=None, param=None):
+        log_debug('quit application')
         if self._window:
             self._window.destroy()
 
@@ -84,10 +100,12 @@ class Application(Gtk.Application):
         Gtk.Application.do_shutdown(self)
 
     def do_activate(self):
+        log_debug('activate application')
         if not self._window:
             self._window = Window(application=self, title="controlP")
         self._window.present()
         self._screen_refresh.start()
+        log_debug('application activated')
 
     def on_about(self, action, param):
         about_dialog = Gtk.AboutDialog(transient_for=self.window, modal=True)

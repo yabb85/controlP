@@ -40,11 +40,11 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkSwitch" id="_player_power_switch">
+                  <object class="GtkSwitch" id="_network_player_power_switch">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="valign">center</property>
-                    <signal name="notify::active" handler="_on_player_power_activated" swapped="no"/>
+                    <signal name="notify::active" handler="_on_network_player_power_activated" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>

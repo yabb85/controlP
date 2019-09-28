@@ -1,7 +1,7 @@
+from logging import debug as log_debug
 from gi.repository import Gio, Gtk
 
 from ..coresource import CoreSource
-# from ..signal import get_player_signal
 from .utils import ListBoxRowSource
 
 
@@ -18,6 +18,7 @@ class Source(Gtk.Box):
     _current_value = None
 
     def __init__(self, coremodel):
+        log_debug('initialize source widget')
         super().__init__()
 
         self._coremodel = coremodel
@@ -28,6 +29,7 @@ class Source(Gtk.Box):
         self._source_list.bind_model(self._model, self._create_row)
         self._coremodel.emit('network-player-input-get-status-event')
         self.show_all()
+        log_debug('source widget initialized')
 
     def _create_row(self, source_model):
         return ListBoxRowSource(source_model.props.name, source_model.props.val)
@@ -40,6 +42,7 @@ class Source(Gtk.Box):
             self._current = row.value
 
     def on_input_status_event(self, signal, value):
+        log_debug('update source selection')
         toto = self._model.props.sources[value]
         for row in self._source_list:
             if row.value == toto.props.val:

@@ -14,7 +14,11 @@
           <object class="GtkLabel" id="_song_info_title">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">label</property>
+            <property name="label" translatable="yes">title</property>
+            <property name="wrap">True</property>
+            <style>
+              <class name="cover-title-label"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -26,7 +30,11 @@
           <object class="GtkLabel" id="_song_info_artist">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">label</property>
+            <property name="label" translatable="yes">artist</property>
+            <property name="wrap">True</property>
+            <style>
+              <class name="cover-artist-label"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -38,7 +46,11 @@
           <object class="GtkLabel" id="_song_info_album">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">label</property>
+            <property name="label" translatable="yes">album</property>
+            <property name="wrap">True</property>
+            <style>
+              <class name="cover-album-label"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -50,7 +62,10 @@
           <object class="GtkLabel" id="_song_info_encoding">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">label</property>
+            <property name="label" translatable="yes">encoding</property>
+            <style>
+              <class name="cover-encoding-label"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -62,7 +77,10 @@
           <object class="GtkLabel" id="_song_info_sampling">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">label</property>
+            <property name="label" translatable="yes">sampling</property>
+            <style>
+              <class name="cover-sampling-label"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -74,7 +92,10 @@
           <object class="GtkLabel" id="_song_info_resolution">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">label</property>
+            <property name="label" translatable="yes">resolution</property>
+            <style>
+              <class name="cover-resolution-label"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -83,27 +104,61 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="_song_info_elapsed_time">
+          <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">label</property>
+            <property name="halign">center</property>
+            <property name="spacing">2</property>
+            <child>
+              <object class="GtkLabel" id="_song_info_elapsed_time">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">elapsed</property>
+                <style>
+                  <class name="cover-elapsed-time-label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">/</property>
+                <style>
+                  <class name="cover-separator-label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="_song_info_duration">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">duration</property>
+                <style>
+                  <class name="cover-duration-label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">6</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="_song_info_duration">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">label</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">7</property>
+            <property name="position">8</property>
           </packing>
         </child>
       </object>
@@ -138,9 +193,58 @@
         <child>
           <placeholder/>
         </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="margin_left">5</property>
+            <property name="margin_right">5</property>
+            <property name="margin_top">5</property>
+            <property name="margin_bottom">5</property>
+            <property name="spacing">5</property>
+            <child>
+              <object class="GtkImage" id="_song_info_shuffle_image">
+                <property name="width_request">20</property>
+                <property name="height_request">20</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="stock">gtk-missing-image</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="_song_info_repeat_image">
+                <property name="width_request">20</property>
+                <property name="height_request">20</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="stock">gtk-missing-image</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
       </object>
       <packing>
-        <property name="expand">False</property>
+        <property name="expand">True</property>
         <property name="fill">True</property>
         <property name="padding">10</property>
         <property name="pack_type">end</property>

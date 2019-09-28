@@ -15,7 +15,11 @@ class UpdateTime(Thread):
     def run(self):
         while not self._stop.wait(1):
             str_elaps_time = self._coresong.props.elapsed_time
+            if not str_elaps_time:
+                continue
             splitted = str_elaps_time.split(':')
+            if len(splitted) != 3:
+                continue
             hours = int(splitted[0])
             minutes = int(splitted[1])
             seconds = int(splitted[2])
@@ -45,6 +49,8 @@ class Cover(Gtk.Box):
     _song_info_elapsed_time = Gtk.Template.Child()
     _song_info_duration = Gtk.Template.Child()
     _song_cover_image = Gtk.Template.Child()
+    _song_info_repeat_image = Gtk.Template.Child()
+    _song_info_shuffle_image = Gtk.Template.Child()
 
     def __init__(self, coresong):
         super().__init__()
@@ -62,6 +68,8 @@ class Cover(Gtk.Box):
         self._coresong.bind_property('duration', self._song_info_duration, 'label')
         self._coresong.bind_property('visible', self, 'visible')
         self._coresong.bind_property('pixbuf', self._song_cover_image, 'pixbuf')
+        self._coresong.bind_property('repeat', self._song_info_repeat_image, 'icon-name')
+        self._coresong.bind_property('shuffle', self._song_info_shuffle_image, 'icon-name')
         self.increment = UpdateTime(self._coresong)
         self.increment.start()
 

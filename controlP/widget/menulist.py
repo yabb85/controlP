@@ -2,7 +2,6 @@ from gi.repository import Gtk
 
 from .utils import ListBoxRowSource
 
-
 @Gtk.Template(filename='controlP/ui/menulist.ui')
 class MenuList(Gtk.Box):
     __gtype_name__ = 'MenuList'

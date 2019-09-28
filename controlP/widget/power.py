@@ -1,25 +1,22 @@
+from logging import debug as log_debug
 from gi.repository import GObject, Gtk
-
-# from ..signal import get_ampli_signal, get_player_signal
 
 
 @Gtk.Template(filename='controlP/ui/power.ui')
 class Power(Gtk.Box):
     __gtype_name__ = 'Power'
 
-    _player_power_switch = Gtk.Template.Child()
+    _network_player_power_switch = Gtk.Template.Child()
     _ampli_power_button = Gtk.Template.Child()
 
-    activated = GObject.Property(
-        type=bool, default=False, flags=GObject.ParamFlags.READWRITE
-    )
-
-    def __init__(self, model):
+    def __init__(self, coremodel):
+        log_debug('initialize power widget')
         super().__init__()
-        self._coremodel = model
-        self._coremodel.connect('network-player-power-status-event', self.on_power_status_event)
-        self.bind_property('activated', self._player_power_switch, 'active')
-        self._coremodel.emit('network-player-get-status-event')
+        self._coremodel = coremodel
+        self._corepower = coremodel.props.corepower
+        self._corepower.bind_property('network_player_active', self._network_player_power_switch, 'active')
+        self._coremodel.emit('network-player-power-get-status-event')
+        log_debug('power widget initialized')
 
     @Gtk.Template.Callback()
     def _on_ampli_power_clicked(self, button):
@@ -34,9 +31,6 @@ class Power(Gtk.Box):
         self._coremodel.emit('ampli-volume-up-event')
 
     @Gtk.Template.Callback()
-    def _on_player_power_activated(self, switch, gparam):
+    def _on_network_player_power_activated(self, switch, gparam):
+        log_debug('on_network_player_power_activated : {}'.format(switch.get_active()))
         self._coremodel.emit('network-player-power-event', switch.get_active())
-
-    def on_power_status_event(self, signal, val):
-        print('on_player_power_status_event : {}'.format(val))
-        self.activated = val

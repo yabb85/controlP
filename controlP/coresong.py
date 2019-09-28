@@ -26,10 +26,32 @@ class CoreSong(GObject.GObject):
     state = GObject.Property(type=int)
     pixbuf = GObject.Property(type=Pixbuf)
     visible = GObject.Property(type=bool, default=True)
+    shuffle = GObject.Property(type=str, default=None)
+    repeat = GObject.Property(type=str, default=None)
+    play = GObject.Property(type=int)
+    play_icon = GObject.Property(type=str)
+
+    _repeat_list = [
+        None,
+        'media-playlist-repeat-song-symbolic',
+        'media-playlist-repeat-symbolic',
+    ]
 
     def update(self, status, visibility):
         self.visible = visibility
         if self.visible:
+            shuffle = status.get('shuffle', 0)
+            if shuffle:
+                self.shuffle = 'media-playlist-shuffle-symbolic'
+            else:
+                self.shuffle = None
+            repeat = status.get('repeat', 0)
+            self.repeat = self._repeat_list[repeat]
+            self.play = status.get('play', 0)
+            if self.play == 2:
+                self.play_icon = 'media-playback-pause-symbolic'
+            else:
+                self.play_icon = 'media-playback-start-symbolic'
             lines = status.get('lines', {})
             self.title = lines.get(1, {}).get('value', None)
             self.artist = lines.get(2, {}).get('value', None)

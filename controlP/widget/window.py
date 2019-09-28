@@ -1,4 +1,5 @@
 from gi.repository import Gtk
+from logging import debug as log_debug
 
 # from .ampli import Ampli
 from .headerbar import HeaderBar
@@ -9,6 +10,7 @@ from .source import Source
 
 class ControlpWindow(Gtk.ApplicationWindow):
     def __init__(self, application, title):
+        log_debug('initliaze window')
         super().__init__(application=application, title=title)
         self._app = application
 
@@ -29,3 +31,4 @@ class ControlpWindow(Gtk.ApplicationWindow):
         self._all.pack_start(self._command, True, True, 0)
         self.add(self._all)
         self._all.show()
+        log_debug('window initliazed')
