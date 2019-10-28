@@ -1,9 +1,9 @@
+from logging import getLogger
 from re import match as re_match
 from socket import AF_INET, SOCK_STREAM, socket
 from socket import timeout as exception_timeout
 from threading import RLock
 from time import sleep
-
 
 """
 Module to communicate with Pioneer N-50A
@@ -91,6 +91,8 @@ screen play:
     2 : play
 """
 
+LOGGER = getLogger(__name__)
+
 
 class Pioneer(object):
     """
@@ -102,8 +104,10 @@ class Pioneer(object):
         self.port = port
         self.socket = socket(AF_INET, SOCK_STREAM)
         # self.socket.setblocking(False)
-        self.socket.connect((self.ip, self.port))
+        # self.socket.connect((self.ip, self.port))
+        self._connect()
         self.locker = RLock()
+        self.power = False
 
     def close(self):
         """
@@ -111,14 +115,24 @@ class Pioneer(object):
         """
         self.socket.close()
 
+    def _connect(self):
+        self.socket.connect((self.ip, self.port))
+
     def _send_command(self, command, rep_flag=True):
         """docstring for send_command"""
         with self.locker:
             formatted = u'{command}\r'.format(command=command)
-            self.socket.send(formatted.encode('utf-8'))
+            LOGGER.debug('formatted command: {}'.format(formatted))
+            try:
+                self.socket.send(formatted.encode('utf-8'))
+            except BrokenPipeError as err:
+                self.socket.close()
+                self._connect()
+                self.power_status()
             response = None
             if rep_flag:
                 response = self._read()
+                LOGGER.debug('response: {}'.format(response))
             return response
 
     def _read(self):
@@ -144,13 +158,15 @@ class Pioneer(object):
         Start player
         """
         if self.power_status() == 'PWR2':
-            self._send_command('PO')
+            self._send_command('PO', False)
+            self.power= True
 
     def power_off(self):
         """
         Stop player
         """
-        self._send_command('PF')
+        self._send_command('PF', False)
+        self.power = False
 
     def ampli_power(self):
         """
@@ -162,7 +178,9 @@ class Pioneer(object):
         Status of power player
         """
         response = self._send_command('?P')
-        return response.strip()
+        response = response.strip()
+        self.power = response == 'PWR0'
+        return response
 
     def volume_status(self):
         """
@@ -198,6 +216,9 @@ class Pioneer(object):
         return status
 
     def screen_status(self):
+        LOGGER.debug('Power state : {0}'.format(self.power))
+        if not self.power:
+            return
         self._clean_buffer()
         response = self._send_command('?GAP')
         # if 'GBP08\r\n' == response or 'GBP02\r\n' == response or 'GBP03\r\n' == response:
@@ -211,6 +232,8 @@ class Pioneer(object):
     def img_status(self):
         """
         """
+        if not self.power:
+            return
         response = self._send_command('?GIC')
         return self.parse_menu_response(response)
 
