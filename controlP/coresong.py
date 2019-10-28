@@ -1,4 +1,5 @@
 from datetime import timedelta
+from logging import error as log_error
 from urllib.request import urlopen
 
 from gi.repository import Gdk, Gio, GObject
@@ -77,6 +78,9 @@ class CoreSong(GObject.GObject):
                 input_stream = Gio.MemoryInputStream.new_from_data(
                     response.read(), None
                 )
-                self.pixbuf = Pixbuf.new_from_stream(input_stream, None)
+                try:
+                    self.pixbuf = Pixbuf.new_from_stream(input_stream, None)
+                except:
+                    log_error("Error : cannot use input stream to load picture")
             else:
                 self.pixbuf = None

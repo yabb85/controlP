@@ -36,6 +36,7 @@ class RefreshScreen(Thread):
 
     def run(self):
         while not self._stop.wait(self.duration):
+            log_debug('refresh screen')
             self._coremodel.do_network_player_screen_get_status_event()
 
     def cancel(self):
