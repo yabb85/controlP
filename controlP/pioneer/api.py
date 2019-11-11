@@ -13,24 +13,12 @@ All command are set by simple characters send by socket on port 8102
 Power:
     ON: 'PO\r'
     OFF: 'PF\r'
-    Start/Stop ampli: '0A51CFFFFROI'
 
 Power status:
     Status: '?P\r'
 
     Response:
         PWR0: ON
-
-
-Volume:
-    UP: '0A50AFFFFROI'
-    DOWN: '0A50BFFFFROI'
-
-Volume Status:
-    Status: '?VOL\r'
-
-    Response:
-        VOL40
 
 Input Status:
     Status: '?F\r'
@@ -46,12 +34,6 @@ Input Status:
     FN60 = digital input 2
     FN61 = ipod/usb rear
 
-Image information
-    Status: '?GIC\r'
-
-    Response:
-        GICaaa"b" : aaa = ???, b = url of image
-
 Commandes:
     10PB : play
     11PB : pause
@@ -64,31 +46,86 @@ Commandes:
     34PB : repeat
     35PB : shuffle
 
-screen type:
-    00 : error
-    01 : list
-    02 : file info
-    03 : file info with pause
-    06 : loading
 
-screen vue:
-    000 : list
-    110 : file view
-    002 : music server root
+Cover image information
+    Status: '?GIC\r'
 
-screen shuffle:
-    0 : disabled
-    1 : enabled
+    Response:
+        GICaaa"b"
+            aaa = ???,
+            b = url of image
 
-screen repeat:
-    0 : no repeat
-    1 : one repeat
-    2 : repeat
 
-screen play:
-    0 : stopped
-    1 : pause
-    2 : play
+Dossier image information
+    Status: '?GIAaaaaabbbbb' aaaaa = numero de la premiere ligne, bbbbb numero de la derniere ligne
+
+    Example : '?GIA0000100009'
+
+    Response:
+        GIBaaaaabbbbbxxxcc"dossier"ddd"e"
+            aaaaa = numero de ligne a l'ecran (entre 1 et 8),
+            bbbbb = numero de ligne,
+            cc = nombre de lettre dans le nom du dossier,
+            ddd = nombre de caractere de l'url,
+            e = url du ficheir image
+        GIB000020000201016"Toute la musique"070"http://192.168.1.38:50002/transcoder/jpegtnscaler.cgi/ebdart/23320.jpg"
+
+
+Screen information
+    Status: '?GAP'
+
+    Response:
+        GCP
+        GDP
+        GEP
+        GBP
+
+    screen type:
+        00 : error
+        01 : list
+        02 : file info
+        03 : file info with pause
+        06 : loading
+
+    screen vue:
+        000 : list
+        110 : file view
+        002 : music server root
+
+    screen shuffle:
+        0 : disabled
+        1 : enabled
+
+    screen repeat:
+        0 : no repeat
+        1 : one repeat
+        2 : repeat
+
+    screen play:
+        0 : stopped
+        1 : pause
+        2 : play
+
+
+Amplificator command:
+
+Power:
+    Start/Stop ampli: '0A51CFFFFROI'
+
+Volume:
+    UP: '0A50AFFFFROI'
+    DOWN: '0A50BFFFFROI'
+
+Source:
+    change: '0A555FFFFROI'
+
+Volume Status:
+    Status: '?VOL\r'
+
+    Response:
+        VOL40
+
+
 """
 
 LOGGER = getLogger(__name__)
@@ -102,9 +139,7 @@ class Pioneer(object):
         super(Pioneer, self).__init__()
         self.ip = ip
         self.port = port
-        self.socket = socket(AF_INET, SOCK_STREAM)
-        # self.socket.setblocking(False)
-        # self.socket.connect((self.ip, self.port))
+        self.socket = False
         self._connect()
         self.locker = RLock()
         self.power = False
@@ -113,9 +148,12 @@ class Pioneer(object):
         """
         Close connection
         """
-        self.socket.close()
+        if self.socket:
+            self.socket.close()
 
     def _connect(self):
+        self.socket = socket(AF_INET, SOCK_STREAM)
+        # self.socket.setblocking(False)
         self.socket.connect((self.ip, self.port))
 
     def _send_command(self, command, rep_flag=True):
@@ -126,7 +164,7 @@ class Pioneer(object):
             try:
                 self.socket.send(formatted.encode('utf-8'))
             except BrokenPipeError as err:
-                self.socket.close()
+                self.close()
                 self._connect()
                 self.power_status()
             response = None
@@ -310,6 +348,9 @@ class Pioneer(object):
 
     def volume_up(self):
         self._send_command('0A50AFFFFROI', False)
+
+    def next_source(self):
+        self._send_command('0A555FFFFROI', False)
 
     def select_line(self, nb):
         """
