@@ -273,7 +273,13 @@ class Pioneer(object):
         if not self.power:
             return
         response = self._send_command('?GIC')
-        return self.parse_menu_response(response)
+        return self.parse_image_response(response)
+
+    def directory_status(self, begin, size):
+        if not self.power:
+            return
+        response = self._send_command('?GIA{:05d}{:05d}'.format(begin,begin + size))
+        return self.parse_directory_response(response)
 
     def parse_menu_response(self, response):
         """
@@ -285,7 +291,6 @@ class Pioneer(object):
             r'GDP(?P<begin_disp>.....)(?P<end_disp>.....)(?P<total_line>.....)'
         )
         gep_pattern = r'GEP(?P<number>..)(?P<highlight>.)(?P<tag>..)"(?P<value>.*)"'
-        gic_pattern = r'GIC(?P<img>...)"(?P<url>.*)"'
         for line in string:
             match = re_match(gcp_pattern, line)
             if match:
@@ -304,10 +309,32 @@ class Pioneer(object):
                 # result.update(status)
                 result.setdefault('lines', {})
                 result['lines'][int(status['number'])] = status
+        return result
+
+    def parse_image_response(self, response):
+        result = {}
+        lines = response.split('\r\n')
+        gic_pattern = r'GIC(?P<url_size>...)"(?P<url>.*)"'
+        for line in lines:
             match = re_match(gic_pattern, line)
             if match:
                 status = match.groupdict()
                 result.update(status)
+        return result
+
+    def parse_directory_response(self, response):
+        result = {}
+        lines = response.split('\r\n')
+        gib_pattern = r'GIB(?P<begin_disp>\d{5})(?P<begin_line>\d{5})...(?P<size_name>\d{2})"(?P<name>.*)"(?P<size_url>\d{3})"(?P<url>.*)"'
+        for line in lines:
+            match = re_match(gib_pattern, line)
+            if match:
+                status = match.groupdict()
+                status['begin_disp'] = int(status['begin_disp'])
+                status['begin_line'] = int(status['begin_line'])
+                status['size_name'] = int(status['size_name'])
+                status['size_url'] = int(status['size_url'])
+                result[status['begin_disp']] = status
         return result
 
     def play(self):
