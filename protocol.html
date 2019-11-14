@@ -1,0 +1,845 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Protocol definition &#8212; ControlP 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to ControlP’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="protocol-definition">
+<h1>Protocol definition<a class="headerlink" href="#protocol-definition" title="Permalink to this headline">¶</a></h1>
+<p>This page explain the protocol used by pioneer N-50A</p>
+<p>The communication between your application and the player is a socket opened on port 8102.
+If you use a NAS to store your files you must use http to retrieve the cover of songs.
+The protocol have two command type, the first is the command without response and the second is command with response.</p>
+<div class="section" id="network-player">
+<h2>Network player<a class="headerlink" href="#network-player" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="power">
+<h3>Power<a class="headerlink" href="#power" title="Permalink to this headline">¶</a></h3>
+<p>This section exaplain how to manage the power of your player</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 44%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>order</p></th>
+<th class="head"><p>command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ON</p></td>
+<td><p>PO\r</p></td>
+</tr>
+<tr class="row-odd"><td><p>OFF</p></td>
+<td><p>PF\r</p></td>
+</tr>
+</tbody>
+</table>
+<p>To know the state of your player you can send the command</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 53%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>order</p></th>
+<th class="head"><p>command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p>?P\r</p></td>
+</tr>
+</tbody>
+</table>
+<p>the response of this command is</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 44%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>status</p></th>
+<th class="head"><p>response</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ON</p></td>
+<td><p>PWR0</p></td>
+</tr>
+<tr class="row-odd"><td><p>OFF</p></td>
+<td><p>PWR2</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="input">
+<h3>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 65%" />
+<col style="width: 35%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>input</p></th>
+<th class="head"><p>command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DAC</p></td>
+<td><p>13FN\r</p></td>
+</tr>
+<tr class="row-odd"><td><p>ipod/usb front</p></td>
+<td><p>17FN\r</p></td>
+</tr>
+<tr class="row-even"><td><p>radio</p></td>
+<td><p>38FN\r</p></td>
+</tr>
+<tr class="row-odd"><td><p>NAS</p></td>
+<td><p>44FN\r</p></td>
+</tr>
+<tr class="row-even"><td><p>favorite</p></td>
+<td><p>45FN\r</p></td>
+</tr>
+<tr class="row-odd"><td><p>spotify</p></td>
+<td><p>57FN\r</p></td>
+</tr>
+<tr class="row-even"><td><p>digital input 1</p></td>
+<td><p>59FN\r</p></td>
+</tr>
+<tr class="row-odd"><td><p>digital input 2</p></td>
+<td><p>60FN\r</p></td>
+</tr>
+<tr class="row-even"><td><p>ipod/usb rear</p></td>
+<td><p>61FN\r</p></td>
+</tr>
+</tbody>
+</table>
+<p>To know the input selected by your network player you can use the following command:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 53%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>order</p></th>
+<th class="head"><p>command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p>?F\r</p></td>
+</tr>
+</tbody>
+</table>
+<p>the response of this command is</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 63%" />
+<col style="width: 37%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>input</p></th>
+<th class="head"><p>response</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DAC</p></td>
+<td><p>FN13</p></td>
+</tr>
+<tr class="row-odd"><td><p>ipod/usb front</p></td>
+<td><p>FN17</p></td>
+</tr>
+<tr class="row-even"><td><p>radio</p></td>
+<td><p>FN38</p></td>
+</tr>
+<tr class="row-odd"><td><p>NAS</p></td>
+<td><p>FN44</p></td>
+</tr>
+<tr class="row-even"><td><p>favorite</p></td>
+<td><p>FN45</p></td>
+</tr>
+<tr class="row-odd"><td><p>spotify</p></td>
+<td><p>FN57</p></td>
+</tr>
+<tr class="row-even"><td><p>digital input 1</p></td>
+<td><p>FN59</p></td>
+</tr>
+<tr class="row-odd"><td><p>digital input 2</p></td>
+<td><p>FN60</p></td>
+</tr>
+<tr class="row-even"><td><p>ipod/usb rear</p></td>
+<td><p>FN61</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="music-player">
+<h3>Music player<a class="headerlink" href="#music-player" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 64%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>order</p></th>
+<th class="head"><p>commande</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>play</p></td>
+<td><p>10PB\r</p></td>
+</tr>
+<tr class="row-odd"><td><p>pause</p></td>
+<td><p>11PB\r</p></td>
+</tr>
+<tr class="row-even"><td><p>precedent</p></td>
+<td><p>12PB\r</p></td>
+</tr>
+<tr class="row-odd"><td><p>suivant</p></td>
+<td><p>13PB\r</p></td>
+</tr>
+<tr class="row-even"><td><p>stop</p></td>
+<td><p>20PB\r</p></td>
+</tr>
+<tr class="row-odd"><td><p>entrer</p></td>
+<td><p>30PB\r</p></td>
+</tr>
+<tr class="row-even"><td><p>return</p></td>
+<td><p>31PB\r</p></td>
+</tr>
+<tr class="row-odd"><td><p>ajoute au favori</p></td>
+<td><p>32PB\r</p></td>
+</tr>
+<tr class="row-even"><td><p>repeat</p></td>
+<td><p>34PB\r</p></td>
+</tr>
+<tr class="row-odd"><td><p>shuffle</p></td>
+<td><p>35PB\r</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="screen-status">
+<h3>Screen status<a class="headerlink" href="#screen-status" title="Permalink to this headline">¶</a></h3>
+<p>to know the informations display on screen you can execute the following command:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 53%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>order</p></th>
+<th class="head"><p>command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>status</p></td>
+<td><p>?GAP\r</p></td>
+</tr>
+</tbody>
+</table>
+<p>this command return the following responses:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 52%" />
+<col style="width: 48%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>type of information</p></th>
+<th class="head"><p>response</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>screen header information</p></td>
+<td><p>GCPaabcdefghijkkklmm”n”</p></td>
+</tr>
+<tr class="row-odd"><td><p>screen information</p></td>
+<td><p>GDPaaaaabbbbbccccc</p></td>
+</tr>
+<tr class="row-even"><td><p>screen line information</p></td>
+<td><p>GEPaabcc”d”</p></td>
+</tr>
+</tbody>
+</table>
+<p>Often the response contains several value of this table.</p>
+<div class="section" id="gcp">
+<h4>GCP<a class="headerlink" href="#gcp" title="Permalink to this headline">¶</a></h4>
+<p>This response is send to describe the view</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 8%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 9%" />
+<col style="width: 6%" />
+<col style="width: 8%" />
+<col style="width: 9%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>GCP</p></td>
+<td><p>aa</p></td>
+<td><p>b</p></td>
+<td><p>c</p></td>
+<td><p>d</p></td>
+<td><p>e</p></td>
+<td><p>f</p></td>
+<td><p>g</p></td>
+<td><p>h</p></td>
+<td><p>i</p></td>
+<td><p>j</p></td>
+<td><p>kkk</p></td>
+<td><p>l</p></td>
+<td><p>mm</p></td>
+<td><p>“n”</p></td>
+</tr>
+</tbody>
+</table>
+<p>Each field have following description</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>field</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>aa</p></td>
+<td><p>screen type</p></td>
+</tr>
+<tr class="row-odd"><td><p>b</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>c</p></td>
+<td><p>top menu button enabled</p></td>
+</tr>
+<tr class="row-odd"><td><p>d</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>e</p></td>
+<td><p>return button enabled</p></td>
+</tr>
+<tr class="row-odd"><td><p>f</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>g</p></td>
+<td><p>shuffle enable</p></td>
+</tr>
+<tr class="row-odd"><td><p>h</p></td>
+<td><p>repeat enabled</p></td>
+</tr>
+<tr class="row-even"><td><p>i</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>j</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>kkk</p></td>
+<td><p>view type</p></td>
+</tr>
+<tr class="row-odd"><td><p>l</p></td>
+<td><p>play status</p></td>
+</tr>
+<tr class="row-even"><td><p>mm</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>n</p></td>
+<td><p>title</p></td>
+</tr>
+</tbody>
+</table>
+<p>The screen type can be have several value described in following table:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>code</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>00</p></td>
+<td><p>error</p></td>
+</tr>
+<tr class="row-odd"><td><p>01</p></td>
+<td><p>list</p></td>
+</tr>
+<tr class="row-even"><td><p>02</p></td>
+<td><p>file info</p></td>
+</tr>
+<tr class="row-odd"><td><p>03</p></td>
+<td><p>file info with pause</p></td>
+</tr>
+<tr class="row-even"><td><p>06</p></td>
+<td><p>loading</p></td>
+</tr>
+</tbody>
+</table>
+<p>The view can be display several type of informations.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 88%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>code</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>000</p></td>
+<td><p>the view is a list</p></td>
+</tr>
+<tr class="row-odd"><td><p>002</p></td>
+<td><p>the view display the root of music server</p></td>
+</tr>
+<tr class="row-even"><td><p>110</p></td>
+<td><p>the view display information of file</p></td>
+</tr>
+</tbody>
+</table>
+<p>The play field display the state of current play</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 68%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>code</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>stopped</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>pause</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>play</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="gdp">
+<h4>GDP<a class="headerlink" href="#gdp" title="Permalink to this headline">¶</a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 27%" />
+<col style="width: 27%" />
+<col style="width: 27%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>GDP</p></td>
+<td><p>aaaaa</p></td>
+<td><p>bbbbb</p></td>
+<td><p>ccccc</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>field</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>aaaaa</p></td>
+<td><p>first line at screen</p></td>
+</tr>
+<tr class="row-odd"><td><p>bbbbb</p></td>
+<td><p>last line at screen</p></td>
+</tr>
+<tr class="row-even"><td><p>ccccc</p></td>
+<td><p>total number of lines</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="gep">
+<h4>GEP<a class="headerlink" href="#gep" title="Permalink to this headline">¶</a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 19%" />
+<col style="width: 14%" />
+<col style="width: 19%" />
+<col style="width: 24%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>GEP</p></td>
+<td><p>aa</p></td>
+<td><p>b</p></td>
+<td><p>cc</p></td>
+<td><p>“d”</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>field</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>aa</p></td>
+<td><p>number of line</p></td>
+</tr>
+<tr class="row-odd"><td><p>b</p></td>
+<td><p>selected line</p></td>
+</tr>
+<tr class="row-even"><td><p>cc</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>“d”</p></td>
+<td><p>text of line</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="image-information">
+<h3>Image information<a class="headerlink" href="#image-information" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 63%" />
+<col style="width: 38%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>order</p></th>
+<th class="head"><p>command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>get image url</p></td>
+<td><p>?GIC\r</p></td>
+</tr>
+</tbody>
+</table>
+<p>response</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>GIC</p></td>
+<td><p>aaa</p></td>
+<td><p>“b”</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>field</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>aaa</p></td>
+<td><p>size of url</p></td>
+</tr>
+<tr class="row-odd"><td><p>b</p></td>
+<td><p>url of picture</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="directory-information">
+<h3>Directory information<a class="headerlink" href="#directory-information" title="Permalink to this headline">¶</a></h3>
+<p>Instead of read the screen ifnormation of directoy you can request directly the information of directories and retrieve the picture associated.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 63%" />
+<col style="width: 37%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>order</p></th>
+<th class="head"><p>command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>get directory list and picture</p></td>
+<td><p>?GIAaaaaabbbbb\r</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>field</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>aaaaa</p></td>
+<td><p>number of the first line</p></td>
+</tr>
+<tr class="row-odd"><td><p>bbbbb</p></td>
+<td><p>number of the last line</p></td>
+</tr>
+</tbody>
+</table>
+<p>response</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 12%" />
+<col style="width: 9%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>GIB</p></td>
+<td><p>aaaaa</p></td>
+<td><p>bbbbb</p></td>
+<td><p>ccc</p></td>
+<td><p>dd</p></td>
+<td><p>“e”</p></td>
+<td><p>fff</p></td>
+<td><p>“g”</p></td>
+</tr>
+</tbody>
+</table>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GIB000020000201016</span><span class="s2">&quot;Toute la musique&quot;</span><span class="mi">066</span><span class="s2">&quot;http://127.0.0.1:5000/transcoder/jpegtnscaler.cgi/ebdart/23320.jpg&quot;</span>
+</pre></div>
+</div>
+<p>Each field ahve following description</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 88%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>field</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>aaaaa</p></td>
+<td><p>number of line displayed on screen (between 1 &amp; 8 )</p></td>
+</tr>
+<tr class="row-odd"><td><p>bbbbb</p></td>
+<td><p>number of line</p></td>
+</tr>
+<tr class="row-even"><td><p>ccc</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>dd</p></td>
+<td><p>number of characters in directory name</p></td>
+</tr>
+<tr class="row-even"><td><p>e</p></td>
+<td><p>directory name</p></td>
+</tr>
+<tr class="row-odd"><td><p>fff</p></td>
+<td><p>number of characters in picture url</p></td>
+</tr>
+<tr class="row-even"><td><p>g</p></td>
+<td><p>picture url</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="amplifactor">
+<h2>Amplifactor<a class="headerlink" href="#amplifactor" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Power<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>The power of amplificator is little different than power of network player.
+You have only one command to start and stop the amplificator.
+Also it is not possible to know the state of power of amplificator.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 59%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>order</p></th>
+<th class="head"><p>command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Start/Stop</p></td>
+<td><p>0A51CFFFFROI\r</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="volume">
+<h3>Volume<a class="headerlink" href="#volume" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 71%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>order</p></th>
+<th class="head"><p>command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>up</p></td>
+<td><p>0A50AFFFFROI\r</p></td>
+</tr>
+<tr class="row-odd"><td><p>down</p></td>
+<td><p>0A50BFFFFROI\r</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="source">
+<h3>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 68%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>order</p></th>
+<th class="head"><p>command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>change</p></td>
+<td><p>0A555FFFFROI\r</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ControlP</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Protocol definition</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#network-player">Network player</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#amplifactor">Amplifactor</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to ControlP’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Laurent Hory.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/protocol.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
