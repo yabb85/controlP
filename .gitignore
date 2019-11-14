@@ -31,6 +31,8 @@ include
 # Rope project settings
 .ropeproject
 
+# docs
+docs/build
 
 ### Vim ###
 # swap

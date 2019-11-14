@@ -62,12 +62,13 @@ Dossier image information
     Example : '?GIA0000100009'
 
     Response:
-        GIBaaaaabbbbbxxxcc"dossier"ddd"e"
+        GIBaaaaabbbbbcccdd"e"fff"g"
             aaaaa = numero de ligne a l'ecran (entre 1 et 8),
             bbbbb = numero de ligne,
-            cc = nombre de lettre dans le nom du dossier,
-            ddd = nombre de caractere de l'url,
-            e = url du ficheir image
+            dd = nombre de lettre dans le nom du dossier,
+            e = nom du dossier
+            fff = nombre de caractere de l'url,
+            g²= url du ficheir image
         GIB000020000201016"Toute la musique"070"http://192.168.1.38:50002/transcoder/jpegtnscaler.cgi/ebdart/23320.jpg"
 
 
