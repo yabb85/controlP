@@ -45,28 +45,16 @@ class CoreMenu(Gio.ListStore):
         if self._previous_status and len(shared_items) == len(self._previous_status):
             return
         with self.locker:
-            begin = status.get('begin_disp', None)
-            if begin:
-                self.begin = int(begin)
-            else:
-                self.begin = 0
-            end = status.get('end_disp', None)
-            if end:
-                self.end = int(end)
-            else:
-                self.end = 0
-            total = status.get('total_line', None)
-            if total:
-                self.total = int(total)
-            else:
-                self.total = 0
+            self.begin = status.get('begin_disp', 0)
+            self.end = status.get('end_disp', 0)
+            self.total = status.get('total_line', 0)
             self.remove_all()
             lines = status.get('lines', {})
             for key, value in lines.items():
                 text = value.get('value', None)
                 index = key + self.begin - 1
-                if value.get('highlight', '0') == '1':
-                    self.highlight = index
+                # if value.get('highlight', '0') == '1':
+                    # self.highlight = index
                 row = MenuModel(text, index)
                 self.append(row)
             self.up_visible = self.begin != 1

@@ -260,12 +260,11 @@ class Pioneer(object):
             return
         self._clean_buffer()
         response = self._send_command('?GAP')
-        # if 'GBP08\r\n' == response or 'GBP02\r\n' == response or 'GBP03\r\n' == response:
-        # response += self.read()
-        if re_match('^GBP0.\r\n$', response):
+        result = self.parse_menu_response(response)
+        while 'nb_lines' not in result or 'lines' not in result or len(result['lines']) < result['nb_lines']:
             sleep(0.1)
             response += self._read()
-        result = self.parse_menu_response(response)
+            result.update(self.parse_menu_response(response))
         return result
 
     def img_status(self):
@@ -279,20 +278,31 @@ class Pioneer(object):
     def directory_status(self, begin, size):
         if not self.power:
             return
-        response = self._send_command('?GIA{:05d}{:05d}'.format(begin,begin + size))
-        return self.parse_directory_response(response)
+        response = self._send_command('?GIA{:05d}{:05d}'.format(begin,begin + size - 1))
+        status = self.parse_directory_response(response)
+        while len(status) < size:
+            sleep(0.1)
+            response = self._read()
+            status.update(self.parse_directory_response(response))
+        return status
 
     def parse_menu_response(self, response):
         """
         """
         result = {}
         string = response.split('\r\n')
+        gbp_pattern = r'GBP(?P<nb_lines>..)'
         gcp_pattern = r'GCP(?P<type>..)(?P<view>.)(?P<top>.)(?P<unknown1>.)(?P<return>.)(?P<unknown2>.)(?P<shuffle>.)(?P<repeat>.)(?P<unknown3>.)(?P<unknown4>.)(?P<vue>...)(?P<play>.)(?P<unknown5>..)"(?P<title>.*)"'
         gdp_pattern = (
             r'GDP(?P<begin_disp>.....)(?P<end_disp>.....)(?P<total_line>.....)'
         )
         gep_pattern = r'GEP(?P<number>..)(?P<highlight>.)(?P<tag>..)"(?P<value>.*)"'
         for line in string:
+            match = re_match(gbp_pattern, line)
+            if match:
+                status = match.groupdict()
+                status['nb_lines'] = int(status['nb_lines'])
+                result.update(status)
             match = re_match(gcp_pattern, line)
             if match:
                 status = match.groupdict()
@@ -303,13 +313,17 @@ class Pioneer(object):
             match = re_match(gdp_pattern, line)
             if match:
                 status = match.groupdict()
+                status['begin_disp'] = int(status['begin_disp'])
+                status['end_disp'] = int(status['end_disp'])
+                status['total_line'] = int(status['total_line'])
                 result.update(status)
             match = re_match(gep_pattern, line)
             if match:
                 status = match.groupdict()
                 # result.update(status)
                 result.setdefault('lines', {})
-                result['lines'][int(status['number'])] = status
+                status['number'] = int(status['number'])
+                result['lines'][status['number']] = status
         return result
 
     def parse_image_response(self, response):
@@ -326,14 +340,14 @@ class Pioneer(object):
     def parse_directory_response(self, response):
         result = {}
         lines = response.split('\r\n')
-        gib_pattern = r'GIB(?P<begin_disp>\d{5})(?P<begin_line>\d{5})...(?P<size_name>\d{2})"(?P<name>.*)"(?P<size_url>\d{3})"(?P<url>.*)"'
+        gib_pattern = r'GIB(?P<begin_disp>\d{5})(?P<begin_line>\d{5})...(?P<size_value>\d{2})"(?P<value>.*)"(?P<size_url>\d{3})"(?P<url>.*)"'
         for line in lines:
             match = re_match(gib_pattern, line)
             if match:
                 status = match.groupdict()
                 status['begin_disp'] = int(status['begin_disp'])
                 status['begin_line'] = int(status['begin_line'])
-                status['size_name'] = int(status['size_name'])
+                status['size_value'] = int(status['size_value'])
                 status['size_url'] = int(status['size_url'])
                 result[status['begin_disp']] = status
         return result

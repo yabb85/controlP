@@ -1,6 +1,6 @@
 from json import dumps
 from logging import debug as log_debug
-from threading import Lock
+from threading import RLock
 from time import sleep
 
 from gi.repository import GObject
@@ -63,7 +63,7 @@ class CoreModel(GObject.GObject):
         self._coremenu = CoreMenu()
         self._corepower = CorePower()
         self._network_player = Pioneer('192.168.1.100', 8102)
-        self.locker = Lock()
+        self.locker = RLock()
 
     @GObject.Property(type=CoreSong, flags=GObject.ParamFlags.READABLE)
     def coresong(self):
@@ -144,6 +144,10 @@ class CoreModel(GObject.GObject):
                 self._coresong.update(status, True)
                 self._coremenu.update(status, False)
             elif view_type and view_type == '01':
+                limit = min(20, status['total_line'] - status['begin_disp'] + 1)
+                new_lines = self._network_player.directory_status(status['begin_disp'], limit)
+                status['lines'].update(new_lines)
+                status['end_disp'] = status['begin_disp'] + len(new_lines) - 1
                 self._coresong.update(status, False)
                 self._coremenu.update(status, True)
             else:

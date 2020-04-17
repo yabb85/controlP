@@ -28,7 +28,7 @@ MENU_XML = """
 
 
 class RefreshScreen(Thread):
-    def __init__(self, coremodel, duration=1.0):
+    def __init__(self, coremodel, duration=10.0):
         super().__init__()
         self._coremodel = coremodel
         self._stop = Event()

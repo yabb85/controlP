@@ -33,7 +33,7 @@ class MenuList(Gtk.Box):
 
     @Gtk.Template.Callback()
     def _on_up_button_clicked(self, button):
-        value = max(self._coremenu.props.begin - 8, 1)
+        value = max(self._coremenu.props.begin - 20, 1)
         self._coremodel.emit('network-player-select-line-event', value)
 
     @Gtk.Template.Callback()
