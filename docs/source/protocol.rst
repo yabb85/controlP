@@ -1,7 +1,8 @@
 Protocol definition
 ===================
 
-This page explain the protocol used by pioneer N-50A
+This page explain the protocol used by pioneer N-50A.
+The explaination is revert engineering of network player with wireshark.
 
 The communication between your application and the player is a socket opened on port 8102.
 If you use a NAS to store your files you must use http to retrieve the cover of songs.
@@ -157,6 +158,30 @@ this command return the following responses:
 
 Often the response contains several value of this table. 
 
+Example for a screen on song played::
+
+    'GBP08\r\nGCP02110100000110200""\r\nGDP000010000100001\r\nGEP01020"Milk"\r\nGEP02021"Garbage"\r\nGEP03022"Garbage"\r\nGEP04026"mp3"\r\nGEP05028""\r\nGEP06029"320kbps"\r\nGEP07023"0:23"\r\nGEP08034"3:52"\r\n'
+
+Example when screen display a song list::
+
+    'GBP08\r\nGCP01110100000000200"Garbage"\r\nGDP000010000800012\r\nGEP01002"Supervixen"\r\nGEP02102"Queer"\r\nGEP03002"Only Happy When It Rains"\r\nGEP04002"As Heaven Is Wide"\r\nGEP05002"Not My Idea"\r\nGEP06002"A Stroke Of Luck"\r\nGEP07002"Vow"\r\nGEP08002"Stupid Girl"\r\n'
+
+GBP
+***
+
+First instructtion returned when the scrren status is required, explain the number of GEP must be parsed.
+
++-----+----+
+| GBP | aa |
++-----+----+
+
+Each field have following description
+
++-------+------------------------------------+
+| field | description                        |
++=======+====================================+
+| aa    | number of line displayed on screen |
++-------+------------------------------------+
 
 GCP
 ***
@@ -166,6 +191,10 @@ This response is send to describe the view
 +-----+----+---+---+---+---+---+---+---+---+---+-----+---+----+-----+
 | GCP | aa | b | c | d | e | f | g | h | i | j | kkk | l | mm | "n" |
 +-----+----+---+---+---+---+---+---+---+---+---+-----+---+----+-----+
+
+Example::
+
+    GCP01110100000000200"Garbage"
 
 
 Each field have following description
@@ -251,6 +280,11 @@ GDP
 | GDP | aaaaa | bbbbb | ccccc |
 +-----+-------+-------+-------+
 
+Example::
+
+    GDP000010000800012
+
+
 +-------+-------------------------+
 | field | description             |
 +=======+=========================+
@@ -267,6 +301,10 @@ GEP
 +-----+----+---+----+-----+
 | GEP | aa | b | cc | "d" |
 +-----+----+---+----+-----+
+
+Example::
+
+    GEP01002"Supervixen"
 
 
 +-------+----------------+
@@ -312,7 +350,7 @@ response
 Directory information
 ~~~~~~~~~~~~~~~~~~~~~
 
-Instead of read the screen ifnormation of directoy you can request directly the information of directories and retrieve the picture associated.
+Instead of read the screen information of directory you can request directly the information of directories and retrieve the picture associated.
 
 
 +--------------------------------+-------------------+
@@ -337,7 +375,7 @@ response
 | GIB | aaaaa | bbbbb | ccc | dd | "e" | fff | "g" |
 +-----+-------+-------+-----+----+-----+-----+-----+
 
-example::
+Example::
 
     GIB000020000201016"Toute la musique"066"http://127.0.0.1:5000/transcoder/jpegtnscaler.cgi/ebdart/23320.jpg"
 
