@@ -1,5 +1,5 @@
 from logging import debug as log_debug
-from gi.repository import GObject, Gtk
+from gi.repository import GObject, Gtk # type: ignore
 
 
 @Gtk.Template(filename='controlP/ui/power.ui')

@@ -1,4 +1,4 @@
-from gi.repository import Gtk
+from gi.repository import Gtk # type: ignore
 from logging import debug as log_debug
 
 # from .ampli import Ampli
@@ -12,6 +12,7 @@ class ControlpWindow(Gtk.ApplicationWindow):
     def __init__(self, application, title):
         log_debug('initliaze window')
         super().__init__(application=application, title=title)
+        self.set_default_size(800, 600)
         self._app = application
 
         self.hb = HeaderBar(self._app.props.coremodel)

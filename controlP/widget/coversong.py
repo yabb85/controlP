@@ -1,13 +1,17 @@
 from datetime import timedelta
 from threading import Event, Thread
 
-from gi.repository import Gio, GObject, Gtk
+from gi.repository import Gio, GObject, Gtk # type: ignore
 
 from ..coresong import CoreSong
 
 
 class UpdateTime(Thread):
-    def __init__(self, coresong):
+    """
+    Increment time counter each second
+    """
+
+    def __init__(self, coresong: CoreSong):
         super().__init__()
         self._coresong = coresong
         self._stop = Event()
@@ -35,7 +39,8 @@ class UpdateTime(Thread):
 @Gtk.Template(filename='controlP/ui/coversong.ui')
 class Cover(Gtk.Box):
     """
-    Class to display cover album
+    Class used to display cover album
+    Use coversong.ui template to create panel
     """
 
     __gtype_name__ = 'CoverSong'
@@ -52,7 +57,7 @@ class Cover(Gtk.Box):
     _song_info_repeat_image = Gtk.Template.Child()
     _song_info_shuffle_image = Gtk.Template.Child()
 
-    def __init__(self, coresong):
+    def __init__(self, coresong: CoreSong):
         super().__init__()
 
         self._coresong = coresong
@@ -68,8 +73,12 @@ class Cover(Gtk.Box):
         self._coresong.bind_property('duration', self._song_info_duration, 'label')
         self._coresong.bind_property('visible', self, 'visible')
         self._coresong.bind_property('pixbuf', self._song_cover_image, 'pixbuf')
-        self._coresong.bind_property('repeat', self._song_info_repeat_image, 'icon-name')
-        self._coresong.bind_property('shuffle', self._song_info_shuffle_image, 'icon-name')
+        self._coresong.bind_property(
+            'repeat', self._song_info_repeat_image, 'icon-name'
+        )
+        self._coresong.bind_property(
+            'shuffle', self._song_info_shuffle_image, 'icon-name'
+        )
         self.increment = UpdateTime(self._coresong)
         self.increment.start()
 

@@ -1,8 +1,8 @@
-from logging import debug as log_debug
+from logging import getLogger
 from threading import Event, Thread, Timer
 from time import sleep
 
-from gi.repository import Gdk, Gio, GObject, Gtk
+from gi.repository import Gdk, Gio, GObject, Gtk # type: ignore
 
 from .coremodel import CoreModel
 from .widget.window import ControlpWindow as Window
@@ -25,9 +25,15 @@ MENU_XML = """
   </menu>
 </interface>
 """
+LOGGER = getLogger(__name__)
+log_debug = LOGGER.debug
 
 
 class RefreshScreen(Thread):
+    """
+    Call network player status each 10s
+    """
+
     def __init__(self, coremodel, duration=10.0):
         super().__init__()
         self._coremodel = coremodel

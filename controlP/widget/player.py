@@ -1,4 +1,4 @@
-from gi.repository import Gtk
+from gi.repository import Gtk # type: ignore
 
 
 @Gtk.Template(filename='controlP/ui/player.ui')

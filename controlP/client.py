@@ -2,9 +2,9 @@ import os
 import sys
 from logging import basicConfig
 
-import gi
+import gi  # type: ignore
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+from gi.repository import Gtk  # type: ignore
 
 from .application import Application
 from .pioneer import Pioneer
@@ -13,7 +13,7 @@ from .pioneer import Pioneer
 
 
 def main():
-    basicConfig(level=os.environ.get('LOGLEVEL', 'INFO'))
+    basicConfig(level=os.environ.get('LOGLEVEL', 'DEBUG'))
     app = Application()
     app.run(sys.argv)
 

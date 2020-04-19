@@ -2,11 +2,15 @@ from datetime import timedelta
 from logging import error as log_error
 from urllib.request import urlopen
 
-from gi.repository import Gdk, Gio, GObject
-from gi.repository.GdkPixbuf import Pixbuf
+from gi.repository import Gdk, Gio, GObject  # type: ignore
+from gi.repository.GdkPixbuf import Pixbuf  # type: ignore
 
 
 class CoreSong(GObject.GObject):
+    """
+    Model used to update value of Cover widget
+    """
+
     title = GObject.Property(
         type=str, default='title', flags=GObject.ParamFlags.READWRITE
     )

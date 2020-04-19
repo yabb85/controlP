@@ -1,4 +1,4 @@
-from gi.repository import Gio, GObject, Gtk
+from gi.repository import Gio, GObject, Gtk  # type: ignore
 
 
 class SourceModel(GObject.GObject):

@@ -1,6 +1,7 @@
 from logging import debug as log_debug
-from gi.repository import Gio, Gtk
+from gi.repository import Gio, Gtk # type: ignore
 
+from ..coremodel import CoreModel
 from ..coresource import CoreSource
 from .utils import ListBoxRowSource
 
@@ -17,12 +18,12 @@ class Source(Gtk.Box):
 
     _current_value = None
 
-    def __init__(self, coremodel):
+    def __init__(self, coremodel: CoreModel):
         log_debug('initialize source widget')
         super().__init__()
 
         self._coremodel = coremodel
-        self._model = coremodel.props.coresource
+        self._model: CoreSource = coremodel.props.coresource
         self._coremodel.connect(
             'network-player-input-status-event', self.on_input_status_event
         )
@@ -31,7 +32,7 @@ class Source(Gtk.Box):
         self.show_all()
         log_debug('source widget initialized')
 
-    def _create_row(self, source_model):
+    def _create_row(self, source_model: CoreSource):
         return ListBoxRowSource(source_model.props.name, source_model.props.val)
 
     @Gtk.Template.Callback()

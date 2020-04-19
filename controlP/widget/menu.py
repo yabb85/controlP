@@ -2,8 +2,9 @@ from json import loads
 from logging import debug as log_debug
 from logging import error as log_error
 
-from gi.repository import Gtk, Gdk
+from gi.repository import Gdk, Gtk  # type: ignore
 
+from ..coremodel import CoreModel
 from .coversong import Cover
 from .menulist import MenuList
 from .player import Player
@@ -11,7 +12,10 @@ from .utils import ListBoxRowSource
 
 
 class Menu(Gtk.Box):
-    def __init__(self, model):
+    """
+    Contains the list/cover song and player
+    """
+    def __init__(self, model: CoreModel):
         super().__init__(model)
         self.set_orientation(Gtk.Orientation.VERTICAL)
         self.props.homogeneous = False

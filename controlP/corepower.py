@@ -1,4 +1,4 @@
-from gi.repository import GObject
+from gi.repository import GObject  # type: ignore
 
 
 class CorePower(GObject.GObject):

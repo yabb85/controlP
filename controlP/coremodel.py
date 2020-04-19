@@ -1,15 +1,18 @@
 from json import dumps
-from logging import debug as log_debug
+from logging import getLogger
 from threading import RLock
 from time import sleep
 
-from gi.repository import GObject
+from gi.repository import GObject  # type: ignore
 
 from .coremenu import CoreMenu
 from .corepower import CorePower
 from .coresong import CoreSong
 from .coresource import CoreSource
 from .pioneer import Pioneer
+
+LOGGER = getLogger(__name__)
+log_debug = LOGGER.debug
 
 
 class CoreModel(GObject.GObject):
@@ -113,6 +116,7 @@ class CoreModel(GObject.GObject):
         log_debug('do_input_status_event : {}'.format(value))
 
     def do_network_player_input_get_status_event(self):
+        log_debug('do_network_player_input_get_status_event')
         status = self._network_player.input_status()
         self.emit('network-player-input-status-event', status)
 
@@ -144,15 +148,23 @@ class CoreModel(GObject.GObject):
                 self._coresong.update(status, True)
                 self._coremenu.update(status, False)
             elif view_type and view_type == '01':
+                log_debug('begin_disp: {}'.format(status['begin_disp']))
+                log_debug('end_disp: {}'.format(status['end_disp']))
+                log_debug('total_line: {}'.format(status['total_line']))
                 limit = min(20, status['total_line'] - status['begin_disp'] + 1)
-                new_lines = self._network_player.directory_status(status['begin_disp'], limit)
+                log_debug('limit: {}'.format(limit))
+                new_lines = self._network_player.directory_status(
+                    status['begin_disp'], limit
+                )
                 status['lines'].update(new_lines)
                 status['end_disp'] = status['begin_disp'] + len(new_lines) - 1
+                log_debug('new end_disp: {}'.format(status['end_disp']))
                 self._coresong.update(status, False)
                 self._coremenu.update(status, True)
             else:
                 self._coresong.update(None, False)
                 self._coremenu.update(None, False)
+        log_debug('do_network_player_input_get_status_event release lock')
 
     def do_network_player_select_line_event(self, value):
         self._network_player.select_line(value)

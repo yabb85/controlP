@@ -130,10 +130,12 @@ Volume Status:
 """
 
 LOGGER = getLogger(__name__)
+log_debug = LOGGER.debug
 
 
 class Pioneer(object):
     """
+    Class used to send order at pioneer network player
     """
 
     def __init__(self, ip, port):
@@ -153,15 +155,21 @@ class Pioneer(object):
             self.socket.close()
 
     def _connect(self):
+        """
+        open e new socket to send command and receive status
+        """
         self.socket = socket(AF_INET, SOCK_STREAM)
         # self.socket.setblocking(False)
         self.socket.connect((self.ip, self.port))
 
     def _send_command(self, command, rep_flag=True):
-        """docstring for send_command"""
+        """
+        Send command on opened socket
+        """
+        log_debug('_send_command')
         with self.locker:
             formatted = u'{command}\r'.format(command=command)
-            LOGGER.debug('formatted command: {}'.format(formatted))
+            log_debug('formatted command: {}'.format(formatted))
             try:
                 self.socket.send(formatted.encode('utf-8'))
             except BrokenPipeError as err:
@@ -171,17 +179,23 @@ class Pioneer(object):
             response = None
             if rep_flag:
                 response = self._read()
-                LOGGER.debug('response: {}'.format(response))
             return response
 
     def _read(self):
         """
+        read status returned by player
         """
+        log_debug('_read')
         with self.locker:
             response = self.socket.recv(99999999)
-            return response.decode('utf-8')
+            response = response.decode('utf-8')
+            log_debug('response: {}'.format(response))
+            return response
 
     def _clean_buffer(self):
+        """
+        clean socket buffer to remove old status
+        """
         with self.locker:
             self.socket.settimeout(0.3)
             try:
@@ -209,6 +223,8 @@ class Pioneer(object):
 
     def ampli_power(self):
         """
+        if the network player is connected to amplificator
+        this command can power on/off the amplificator
         """
         self._send_command('0A51CFFFFROI', False)
 
@@ -224,6 +240,7 @@ class Pioneer(object):
     def volume_status(self):
         """
         Read the volume status of Hi-Fi
+        TODO : not work
         """
         response = self._send_command('?V')
         return response.strip()
@@ -255,7 +272,10 @@ class Pioneer(object):
         return status
 
     def screen_status(self):
-        LOGGER.debug('Power state : {0}'.format(self.power))
+        """
+        """
+        log_debug('screen_status')
+        log_debug('Power state : {0}'.format(self.power))
         if not self.power:
             return
         self._clean_buffer()
@@ -269,13 +289,16 @@ class Pioneer(object):
 
     def img_status(self):
         """
+        Return url of image displayed on network player screen
         """
+        log_debug('img_status')
         if not self.power:
             return
         response = self._send_command('?GIC')
         return self.parse_image_response(response)
 
     def directory_status(self, begin, size):
+        log_debug('directory_status')
         if not self.power:
             return
         response = self._send_command('?GIA{:05d}{:05d}'.format(begin,begin + size - 1))
@@ -289,6 +312,7 @@ class Pioneer(object):
     def parse_menu_response(self, response):
         """
         """
+        log_debug('parse_menu_response')
         result = {}
         string = response.split('\r\n')
         gbp_pattern = r'GBP(?P<nb_lines>..)'
@@ -327,6 +351,10 @@ class Pioneer(object):
         return result
 
     def parse_image_response(self, response):
+        """
+        Extract url on message return by network player for image displayed
+        """
+        log_debug('parse_image_response')
         result = {}
         lines = response.split('\r\n')
         gic_pattern = r'GIC(?P<url_size>...)"(?P<url>.*)"'
@@ -338,6 +366,9 @@ class Pioneer(object):
         return result
 
     def parse_directory_response(self, response):
+        """
+        """
+        log_debug('parse_directory_response')
         result = {}
         lines = response.split('\r\n')
         gib_pattern = r'GIB(?P<begin_disp>\d{5})(?P<begin_line>\d{5})...(?P<size_value>\d{2})"(?P<value>.*)"(?P<size_url>\d{3})"(?P<url>.*)"'
@@ -354,48 +385,79 @@ class Pioneer(object):
 
     def play(self):
         """
+        Play track
         """
         self._send_command('10PB')
 
     def pause(self):
         """
+        Pause current track played
         """
         self._send_command('11PB')
 
     def previous(self):
+        """
+        Play previous track
+        """
         self._send_command('12PB')
 
     def next(self):
+        """
+        Play next track
+        """
         self._send_command('13PB')
 
     def stop(self):
+        """
+        Stop play
+        """
         self._send_command('20PB')
 
     def enter(self):
         """
+        Select OK for current item selected
         """
         self._send_command('30PB')
 
     def ret(self):
+        """
+        Return to previous menu
+        """
         self._send_command('31PB')
 
     def repeat(self):
+        """
+        Repeat track/album
+        """
         self._send_command('34PB')
 
     def shuffle(self):
+        """
+        Suffle playing order
+        """
         self._send_command('35PB')
 
     def volume_down(self):
+        """
+        If amplificator is linked with network player reduce volume
+        """
         self._send_command('0A50BFFFFROI', False)
 
     def volume_up(self):
+        """
+        If amplificator is linked with network player up volume
+        """
         self._send_command('0A50AFFFFROI', False)
 
     def next_source(self):
+        """
+        Change current source
+        """
         self._send_command('0A555FFFFROI', False)
 
     def select_line(self, nb):
         """
+        select a line in menu
         """
         self._send_command('{:05d}GGP'.format(nb))
 
