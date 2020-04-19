@@ -13,7 +13,7 @@ from .pioneer import Pioneer
 
 
 def main():
-    basicConfig(level=os.environ.get('LOGLEVEL', 'DEBUG'))
+    basicConfig(level=os.environ.get('LOGLEVEL', 'INFO'))
     app = Application()
     app.run(sys.argv)
 

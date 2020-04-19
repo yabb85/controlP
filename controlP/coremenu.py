@@ -21,7 +21,7 @@ class RefreshPixbuf(Thread):
         self.url = url
 
     def run(self):
-        # log_debug('RefreshPixbuf run {}'.format(self.url))
+        log_debug('RefreshPixbuf run {}'.format(self.url))
         response = urlopen(self.url)
         if not response:
             return
@@ -31,10 +31,6 @@ class RefreshPixbuf(Thread):
         if not input_stream:
             return
         self.props.pixbuf = Pixbuf.new_from_stream_at_scale(input_stream, 64, 64, True, None)
-        # self.props.pixbuf = None
-        # log_debug(self.props)
-        # log_debug('RefreshPixbuf finish {}'.format(self.url))
-        print(self.__dict__)
         return
 
 
@@ -52,6 +48,7 @@ class MenuModel(GObject.GObject):
     line_idx = GObject.Property(type=int)
     url = GObject.Property(type=str)
     pixbuf = GObject.Property(type=Pixbuf)
+    thread = None
 
     def __init__(self, text, line_idx, url=None):
         super().__init__()
@@ -71,12 +68,20 @@ class MenuModel(GObject.GObject):
         if url and url != self.props.url:
             log_debug('with url: {}'.format(url))
             self.props.url = url
+            if self.thread:
+                if not self.thread.is_alive():
+                    del self.thread
+                else:
+                    self.thread.join()
+                    self.thread.url = self.props.url
+            if not self.thread:
+                self.thread = RefreshPixbuf(self.props, self.props.url)
             # log_debug('before: {}'.format(self.thread))
             # self.thread.join()
             # log_debug('after: {}'.format(self.thread))
-            self.thread = RefreshPixbuf(self.pixbuf, url)
+            # self.thread = RefreshPixbuf(self.pixbuf, url)
             self.thread.start()
-        else:
+        elif not url:
             self.props.pixbuf = SOUND_PIXBUF
 
 
