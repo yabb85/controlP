@@ -38,7 +38,6 @@ class BottomView(MDFloatLayout):
         self.amplifier_controller.load()
 
     def model_is_changed(self):
-        print('bottom model_is_changed:', str(self.bottom_model.screen))
         self.active = self.amplifier_model.active
         self.screen = self.bottom_model.screen
 
