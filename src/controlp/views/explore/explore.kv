@@ -1,0 +1,19 @@
+<ExploreView>
+    name: "explore"
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        TopView:
+            model: root.top_model
+            controller: root.top_controller
+
+        MenuView:
+            model: root.explore_model
+            controller: root.explore_controller
+
+        BottomView:
+            amplifier_model: root.amplifier_model
+            amplifier_controller: root.amplifier_controller
+            bottom_model: root.bottom_model
+            bottom_controller: root.bottom_controller

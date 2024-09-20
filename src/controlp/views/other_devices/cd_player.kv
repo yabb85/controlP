@@ -1,0 +1,87 @@
+<CDPlayerLayout>
+    orientation: "vertical"
+    theme_bg_color: "Custom"
+    md_bg_color: app.theme_cls.backgroundColor
+    size_hint: 0.9, None
+    height: dp(160)
+    pos_hint: {"center_x": .5}
+    padding: [0, dp(10), 0, 0]
+    MDRelativeLayout:
+        size_hint: 1, None
+        height: dp(40)
+        MDIcon:
+            pos: (15, 0)
+            height: dp(40)
+            width: dp(40)
+            icon: 'disc'
+            radius: 0
+            theme_font_size: "Custom"
+            font_size: dp(40)
+        MDLabel:
+            text: 'cd player'
+            pos: (dp(70), 0)
+        MDSwitch:
+            pos: (root.width - dp(70), 5)
+            active: root.active
+            on_active: root.set_active(self)
+            #height: dp(20)
+    MDBoxLayout:
+        size_hint: 0.9, 1
+        pos_hint: {"center_x": .5}
+        MDIconButton:
+            icon: 'power'
+            theme_text_color: "Custom"
+            text_color: root.button_color
+            theme_font_size: "Custom"
+            font_size: dp(30)
+            size_hint: 0.25, 1
+            disabled: not root.active
+            opacity: 1 if root.active else 0.6
+        MDIconButton:
+            icon: 'skip-previous'
+            theme_text_color: "Custom"
+            text_color: root.button_color
+            theme_font_size: "Custom"
+            font_size: dp(30)
+            size_hint: 0.25, 1
+            disabled: not root.active
+            opacity: 1 if root.active else 0.6
+        MDIconButton:
+            icon: 'play'
+            theme_text_color: "Custom"
+            text_color: root.button_color
+            theme_font_size: "Custom"
+            font_size: dp(30)
+            size_hint: 0.25, 1
+            disabled: not root.active
+            opacity: 1 if root.active else 0.6
+        MDIconButton:
+            icon: 'skip-next'
+            theme_text_color: "Custom"
+            text_color: root.button_color
+            theme_font_size: "Custom"
+            font_size: dp(30)
+            size_hint: 0.25, 1
+            disabled: not root.active
+            opacity: 1 if root.active else 0.6
+    MDBoxLayout:
+        size_hint: 0.9, 1
+        pos_hint: {"center_x": .5}
+        MDIconButton:
+            icon: 'stop'
+            theme_text_color: "Custom"
+            text_color: root.button_color
+            theme_font_size: "Custom"
+            font_size: dp(30)
+            size_hint: 0.5, 1
+            disabled: not root.active
+            opacity: 1 if root.active else 0.6
+        MDIconButton:
+            icon: 'pause'
+            theme_text_color: "Custom"
+            text_color: root.button_color
+            theme_font_size: "Custom"
+            font_size: dp(30)
+            size_hint: 0.5, 1
+            disabled: not root.active
+            opacity: 1 if root.active else 0.6

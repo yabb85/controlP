@@ -1,0 +1,26 @@
+<TopView>
+	type: "small"
+	size_hint_x: 0.999999
+	#md_bg_color: "green"
+	#theme_bg_color: "Custom"
+	pos_hint: {"center_x": .5}
+	MDTopAppBarTitle:
+		text: root.friendly_name
+		sinze_hint_x: 0.5
+		pos_hint: {"center_x": .5}
+		#md_bg_color: "purple"
+
+	MDTopAppBarTrailingButtonContainer:
+		MDActionTopAppBarButton:
+			id: power_button
+			#style: "outlined"
+			icon: "power"
+			#md_bg_color: "black"
+			theme_bg_color: "Custom"
+			theme_text_color: "Custom"
+			text_color: root.power_status
+			theme_line_color: "Custom"
+			line_color: root.power_status
+            theme_font_size: "Custom"
+            font_size: dp(30)
+			on_press: root.power()

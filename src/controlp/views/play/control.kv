@@ -1,0 +1,47 @@
+<ControlView>
+    size_hint: 1, .1
+    orientation: "lr-tb"
+    #theme_bg_color: "Custom"
+    #md_bg_color: "orange"
+    MDIconButton:
+        icon: root.icon_shuffle
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.onSurfaceColor
+        size_hint: 0.2, 1
+        theme_font_size: "Custom"
+        font_size: dp(30)
+        on_press: root.shuffle()
+        #theme_bg_color: "Custom"
+        #md_bg_color: "purple"
+    MDIconButton:
+        icon: "skip-previous"
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.onSurfaceColor
+        size_hint: 0.2, 1
+        theme_font_size: "Custom"
+        font_size: dp(30)
+        on_press: root.previous()
+    MDIconButton:
+        icon: root.icon_play
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.onSurfaceColor
+        size_hint: 0.2, 1
+        theme_font_size: "Custom"
+        font_size: dp(50)
+        on_press: root.play_pause()
+    MDIconButton:
+        icon: "skip-next"
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.onSurfaceColor
+        size_hint: 0.2, 1
+        theme_font_size: "Custom"
+        font_size: dp(30)
+        on_press: root.next()
+    MDIconButton:
+        icon: root.icon_repeat
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.onSurfaceColor
+        size_hint: 0.2, 1
+        theme_font_size: "Custom"
+        font_size: dp(30)
+        on_press: root.repeat()

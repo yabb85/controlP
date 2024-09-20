@@ -1,0 +1,22 @@
+[project]
+name = "controlP"
+version = "0.1.0"
+description = "Use your pioneer N-50A network player."
+authors = [
+    {name = "yabb85", email = "yabb85@gmail.com"},
+]
+dependencies = [
+    "kivymd>=1.2.0",
+    "lxml>=5.3.0",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "GPL-3.0-or-later"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true

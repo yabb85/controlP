@@ -1,0 +1,57 @@
+<MenuItem>
+    MDListItemLeadingAvatar:
+        source: root.url
+    MDListItemHeadlineText:
+        text: root.text
+
+<MenuItemNav>
+    MDListItemLeadingIcon:
+        icon: 'arrow-up-drop-circle-outline'
+
+<MenuView>
+	MDBoxLayout:
+        orientation: "vertical"
+		adaptive_height: True
+
+		MDBoxLayout:
+			id: menu_up
+			size_hint: 1, None
+			MDButton:
+				id: button_up
+				style: "text"
+				theme_width: "Custom"
+				size_hint: 1, None
+				theme_bg_color: "Custom"
+				md_bg_color: app.theme_cls.backgroundColor
+				pos_hint: {"center_x": .5, "center_y": .5}
+				radius: 0
+				opacity: 0
+				on_press: root.explore_up()
+				MDButtonIcon:
+					icon: "triangle"
+					theme_icon_color: "Custom"
+					icon_color: app.theme_cls.onSurfaceColor
+					pos_hint: {"center_x": .5, "center_y": .5}
+		MDList:
+			id: menu_list
+			spacing: 0
+			padding: 0
+		MDBoxLayout:
+			id: menu_down
+			size_hint: 1, None
+			MDButton:
+				id: button_down
+				style: "text"
+				theme_width: "Custom"
+				size_hint: 1, None
+				theme_bg_color: "Custom"
+				md_bg_color: app.theme_cls.backgroundColor
+				pos_hint: {"center_x": .5, "center_y": .5}
+				radius: 0
+				opacity: 0
+				on_press: root.explore_down()
+				MDButtonIcon:
+					icon: "triangle-down"
+					theme_icon_color: "Custom"
+					icon_color: app.theme_cls.onSurfaceColor
+					pos_hint: {"center_x": .5, "center_y": .5}

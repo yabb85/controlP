@@ -1,0 +1,19 @@
+<InputView>
+    name: "input"
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        TopView:
+            model: root.top_model
+            controller: root.top_controller
+
+        InputListView:
+            model: root.input_model
+            controller: root.input_controller
+
+        BottomView:
+            amplifier_model: root.amplifier_model
+            amplifier_controller: root.amplifier_controller
+            bottom_model: root.bottom_model
+            bottom_controller: root.bottom_controller

@@ -1,0 +1,50 @@
+<HomeDeviceCard>
+    padding: 0
+    size_hint: .9, None
+    pos_hint: {"center_x": 0.5}
+    height: dp(200)
+    #size: "", "100dp"
+    #line_color: (0.2, 0.2, 0.2, 0.8)
+    #style: "elevated"
+    #md_bg_color: "#f6eeee"
+    elevation: 3
+    shadow_softness: 8
+    shadow_softness_size: 4
+    shadow_offset: (4, -4)
+	radius: 3
+
+    MDRelativeLayout:
+        padding: 0
+
+        FitImage:
+            source: root.image_path
+            size_hint: 1, None
+            height: dp(175)
+            fit_mode: "cover"
+            pos_hint: {'top': 1}
+
+        MDLabel:
+            id: label
+            text: root.name
+            adaptive_size: True
+            color: "grey"
+            pos: dp(12), dp(3)
+
+
+<HomeView>
+    name: "home"
+    #md_bg_color: app.theme_cls.surfaceColor
+
+    MDBoxLayout:
+        orientation: "vertical"
+        MDTopAppBar:
+            type: "small"
+            size_hint_x: 0.999999999
+            pos_hint: {"center_x": .5}
+            MDTopAppBarTitle:
+                text: "Home"
+                pos_hint: {"center_x": .5}
+        MDBoxLayout:
+            id: home_layout
+            orientation: "vertical"
+            padding: "12dp"

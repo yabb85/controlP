@@ -1,0 +1,23 @@
+<PlayView>
+    name: "play"
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        TopView:
+            model: root.top_model
+            controller: root.top_controller
+
+        SongView:
+            model: root.play_model
+            controller: root.play_controller
+
+        ControlView:
+            model: root.play_model
+            controller: root.play_controller
+
+        BottomView:
+            amplifier_model: root.amplifier_model
+            amplifier_controller: root.amplifier_controller
+            bottom_model: root.bottom_model
+            bottom_controller: root.bottom_controller

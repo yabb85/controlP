@@ -1,0 +1,53 @@
+<BottomView>
+    size_hint: 1, None
+    height: dp(50)
+
+    MDIconButton:
+        icon: 'audio-video'
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.onSurfaceColor
+        pos: (root.width - dp(50), dp(5))
+        height: dp(40)
+        width: dp(40)
+        theme_font_size: "Custom"
+        font_size: dp(30)
+        on_press: root.open_window()
+
+    MDIconButton:
+        icon: 'volume-plus'
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.onSurfaceColor
+        pos: (root.width - dp(100), dp(5))
+        height: dp(40)
+        width: dp(40)
+        theme_font_size: "Custom"
+        font_size: dp(30)
+        on_press: root.vol_up()
+        opacity: 1 if root.active else 0
+        disabled: not root.active
+
+    MDIconButton:
+        icon: 'volume-minus'
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.onSurfaceColor
+        pos: (root.width - dp(150), dp(5))
+        height: dp(40)
+        width: dp(40)
+        theme_font_size: "Custom"
+        font_size: dp(30)
+        on_press: root.vol_down()
+        opacity: 1 if root.active else 0
+        disabled: not root.active
+
+    MDIconButton:
+        icon: 'play'
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.onSurfaceColor
+        pos: (root.width - dp(200), dp(5))
+        height: dp(40)
+        width: dp(40)
+        theme_font_size: "Custom"
+        font_size: dp(30)
+        on_press: root.current_play()
+        opacity: 1 if (root.active and root.screen == 'explore') else 0
+        disabled: not root.active

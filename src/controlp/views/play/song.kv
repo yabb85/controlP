@@ -1,0 +1,73 @@
+<SongView>
+    orientation: "tb-lr"
+    #theme_bg_color: "Custom"
+    #md_bg_color: "blue"
+    MDStackLayout:
+        orientation: "tb-lr"
+        size_hint: 1, .6
+        #theme_bg_color: "Custom"
+        #md_bg_color: "yellow"
+        FitImage:
+            source: root.img_url
+            pos_hint: {"top": 1}
+            fit_mode: "contain"
+    MDStackLayout:
+        orientation: "tb-lr"
+        size_hint: 1, .1
+        #theme_bg_color: "Custom"
+        #md_bg_color: "green"
+        MDLabel:
+            size_hint: .1, 1
+            text: root.elapsed_time
+        MDSlider:
+            size_hint: .8, 1
+            value: root.slider_value
+            max: root.slider_max
+        MDLabel:
+            size_hint: .1, 1
+            text: root.duration
+    MDStackLayout:
+        size_hint: 1, .30
+        orientation: "tb-lr"
+        #theme_bg_color: "Custom"
+        #md_bg_color: "red"
+        MDLabel:
+            text: root.title
+            size_hint: 1, .30
+            halign: "center"
+            theme_font_size: "Custom"
+            font_size: dp(25)
+            shorten: True
+        MDStackLayout:
+            size_hint: 1, .15
+            orientation: "lr-tb"
+            MDLabel:
+                size_hint: .45, 1
+                halign: "right"
+                text: root.album
+                shorten: True
+            MDLabel
+                size_hint: None, 1
+                width: dp(15)
+                halign: "center"
+                text: " - "
+            MDLabel
+                size_hint: .45, 1
+                halign: "left"
+                text: root.artist
+                shorten: True
+        MDStackLayout:
+            size_hint: 1, .20
+            orientation: "lr-tb"
+            MDLabel
+                text: root.encoding
+                size_hint: .33, 1
+                halign: "center"
+            MDLabel
+                text: root.sampling
+                size_hint: .33, 1
+                halign: "center"
+            MDLabel
+                text: root.resolution
+                size_hint: .33, 1
+                halign: "center"

@@ -1,0 +1,12 @@
+<InputItem>
+    MDListItemHeadlineText:
+        text: root.text
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.primaryColor if root.active else app.theme_cls.onSurfaceColor
+
+
+<InputListView>
+    MDList:
+        id: input_list
+        padding: 0
+        spacing: 0

@@ -1,0 +1,70 @@
+<AmplifierLayout>
+    orientation: "vertical"
+    theme_bg_color: "Custom"
+    md_bg_color: app.theme_cls.backgroundColor
+    size_hint: 0.9, None
+    height: dp(120)
+    pos_hint: {"center_x": .5}
+    padding: [0, dp(10), 0, 0]
+    MDRelativeLayout:
+        size_hint: 1, None
+        height: dp(40)
+        MDIcon:
+            pos: (15, 0)
+            height: dp(40)
+            width: dp(40)
+            icon: 'audio-video'
+            radius: 0
+            theme_font_size: "Custom"
+            font_size: dp(40)
+        MDLabel:
+            text: 'amplifier'
+            pos: (dp(70), 0)
+        MDSwitch:
+            id: amplifier_switch
+            pos: (root.width - dp(70), 5)
+            active: root.active
+            on_active: root.set_active(self)
+    MDBoxLayout:
+        size_hint: 0.9, 1
+        pos_hint: {"center_x": .5}
+        MDIconButton:
+            icon: 'power'
+            theme_text_color: "Custom"
+            text_color: root.button_color
+            theme_font_size: "Custom"
+            font_size: dp(30)
+            size_hint: 0.25, 1
+            on_press: root.start_stop_amplifier()
+            disabled: not root.active
+            opacity: 1 if root.active else 0.6
+        MDIconButton:
+            icon: 'import'
+            theme_text_color: "Custom"
+            text_color: root.button_color
+            theme_font_size: "Custom"
+            font_size: dp(30)
+            size_hint: 0.25, 1
+            on_press: root.change_input()
+            disabled: not root.active
+            opacity: 1 if root.active else 0.6
+        MDIconButton:
+            icon: 'volume-minus'
+            theme_text_color: "Custom"
+            text_color: root.button_color
+            theme_font_size: "Custom"
+            font_size: dp(30)
+            size_hint: 0.25, 1
+            on_press: root.vol_down()
+            disabled: not root.active
+            opacity: 1 if root.active else 0.6
+        MDIconButton:
+            icon: 'volume-plus'
+            theme_text_color: "Custom"
+            text_color: root.button_color
+            theme_font_size: "Custom"
+            font_size: dp(30)
+            size_hint: 0.25, 1
+            on_press: root.vol_up()
+            disabled: not root.active
+            opacity: 1 if root.active else 0.6
