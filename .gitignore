@@ -6,7 +6,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-env/
 build/
 develop-eggs/
 dist/
@@ -18,15 +17,30 @@ lib64/
 parts/
 sdist/
 var/
+wheels/
+share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+.buildozer/
 
 # Virtual env
+env/
 local
 bin
 include
 
+# pdm
+#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
+pdm.lock
+#   pdm stores project-wide configurations in .pdm.toml, but it is recommended to not include it
+#   in version control.
+#   https://pdm.fming.dev/#use-with-ide
+.pdm.toml
+.pdm-python
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
+__pypackages__/
 
 # Rope project settings
 .ropeproject
@@ -45,3 +59,6 @@ Session.vim
 *~
 # auto-generated tag files
 tags
+
+#project
+src/controlp/controlp.ini
