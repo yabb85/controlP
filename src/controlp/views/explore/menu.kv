@@ -4,10 +4,6 @@
     MDListItemHeadlineText:
         text: root.text
 
-<MenuItemNav>
-    MDListItemLeadingIcon:
-        icon: 'arrow-up-drop-circle-outline'
-
 <MenuView>
 	MDBoxLayout:
         orientation: "vertical"
@@ -26,7 +22,7 @@
 				pos_hint: {"center_x": .5, "center_y": .5}
 				radius: 0
 				opacity: 0
-				on_press: root.explore_up()
+				on_release: root.explore_up()
 				MDButtonIcon:
 					icon: "triangle"
 					theme_icon_color: "Custom"
@@ -49,7 +45,7 @@
 				pos_hint: {"center_x": .5, "center_y": .5}
 				radius: 0
 				opacity: 0
-				on_press: root.explore_down()
+				on_release: root.explore_down()
 				MDButtonIcon:
 					icon: "triangle-down"
 					theme_icon_color: "Custom"

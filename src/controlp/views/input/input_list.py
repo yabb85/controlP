@@ -10,7 +10,7 @@ class InputItem(MDListItem):
     code = NumericProperty()
     active = BooleanProperty()
 
-    def on_press(self, **kwargs):
+    def on_release(self, **kwargs):
         self.parent.parent.choose_input(self.code)
 
 

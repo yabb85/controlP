@@ -15,12 +15,9 @@ class MenuItem(MDListItem):
     index = NumericProperty()
     url = StringProperty()
 
-    def on_press(self, **kwargs):
+    def on_release(self, **kwargs):
         self.parent.parent.parent.explore(self.index)
 
-
-class MenuItemNav(MDListItem):
-    pass
 
 class MenuView(MDScrollView):
     controller = ObjectProperty()
