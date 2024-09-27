@@ -1,10 +1,10 @@
 from time import sleep
 from kivy.clock import Clock
 
-
 class ExploreController:
     list_size = 50
     cpt = 0
+    plop = 0
 
     def __init__(self, app, explore_model, play_model):
         self.app = app
@@ -18,9 +18,9 @@ class ExploreController:
         Check also display of small view completly only display only end lines
         """
         status = self.app.network_player.screen_status()
-        if not status:
-            self.stop_clock()
-            return
+        for index, line in status['lines'].items():
+            if line['highlight'] == '1':
+                self.explore_model.set_selected_line(index + status['begin_disp'] - 1)
         view_type = status.get('type', None)
         if view_type and view_type == '01':
             if status['total_line'] < self.list_size and status['begin_disp'] > 1:
@@ -33,6 +33,7 @@ class ExploreController:
             status['lines'].update(new_lines)
             status['end_disp'] = status['begin_disp'] + len(new_lines) - 1
             self.explore_model.load(status)
+            self.planify_preload()
         elif view_type and (view_type == '02' or view_type == '03'):
             img_url = self.app.network_player.img_status()
             status.update(img_url)
@@ -46,39 +47,38 @@ class ExploreController:
         self.app.network_player.set_line(index)
         self.refresh_menu()
 
-    def explore_down(self):
-        self.explore_model.scroll_reset = True
-        value = min(self.explore_model.last_line + 1, self.explore_model.total_line)
-        self.app.network_player.select_line(value)
-        self.start_clock()
-        self.refresh_menu()
-
-    def explore_up(self):
-        # self.explore_model.scroll_reset = True
-        value = max(self.explore_model.first_line - self.list_size, 1)
-        self.app.network_player.select_line(value)
-        self.start_clock()
-        self.refresh_menu()
-
     def explore_return(self):
         self.app.network_player.ret()
         self.refresh_menu()
 
-    def start_clock(self):
-        self.event = Clock.schedule_interval(self.clock_refresh_menu, 3)
-        self.cpt = 0
-        # Clock.schedule_once(self.clock_refresh_menu, 3)
+    def planify_preload(self):
+        """
+        Start preload execution if display menu list
+        """
+        if self.explore_model.get_preload_status():
+            Clock.schedule_once(self.preload, 1)
 
-    def stop_clock(self):
-        Clock.unschedule(self.event)
-        self.cpt = 0
-
-    def clock_refresh_menu(self, dt):
-        if self.cpt > 3:
-            self.stop_clock()
-        self.explore_model.scroll_reset = False
-        self.refresh_menu()
-        self.cpt += 1
+    def preload(self, dt):
+        """
+        preload data to feed cache and avoid latency in big menu
+        """
+        first_line = self.explore_model.first_line
+        last_line = self.explore_model.last_line
+        if first_line != 1:
+            limit = max(first_line - self.list_size, first_line - 1)
+            begin = first_line - limit
+        else:
+            begin = last_line + 1
+            limit = min(self.list_size, self.explore_model.total_line - last_line)
+        if limit != 0:
+            new_lines = self.app.network_player.directory_status(
+                begin, limit
+            )
+            self.explore_model.preload_update(new_lines)
+        if self.explore_model.get_preload_status():
+            self.preload(None)
+        else:
+            self.explore_model.notify_observers()
 
     def back_screen(self):
         self.app.back_screen()

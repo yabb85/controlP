@@ -1,4 +1,5 @@
 from itertools import zip_longest
+from math import floor
 from pathlib import Path
 
 from kivy.lang import Builder
@@ -8,6 +9,8 @@ from kivymd.uix.list import MDListItem
 from kivymd.uix.scrollview import MDScrollView
 from kivymd.font_definitions import fonts
 from kivymd.uix.button import MDButtonIcon
+from kivymd.uix.recycleview import MDRecycleView
+from kivymd.uix.boxlayout import MDBoxLayout
 
 
 class MenuItem(MDListItem):
@@ -16,13 +19,13 @@ class MenuItem(MDListItem):
     url = StringProperty()
 
     def on_release(self, **kwargs):
-        self.parent.parent.parent.explore(self.index)
+        # self.parent.parent.parent.explore(self.index)
+        self.parent.parent.explore(self.index)
 
 
-class MenuView(MDScrollView):
+class MenuView(MDRecycleView):
     controller = ObjectProperty()
     model = ObjectProperty()
-    items = ListProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -35,80 +38,33 @@ class MenuView(MDScrollView):
         self.model.add_observer(self)
 
     def explore(self, index: int):
+        """
+        open item to explore tree
+        """
         self.controller.explore_set(index)
 
     def explore_down(self):
+        """
+        Removed with new infinity list
+        """
         self.controller.explore_down()
 
     def explore_up(self):
+        """
+        Removed with new infinity list
+        """
         self.controller.explore_up()
 
     def model_is_changed(self):
-        temporary_list = []
-        for item, status_item in zip_longest(self.items, sorted(self.model.lines.items())):
-            temporary_list.append((item, status_item))
-        # self.ids.menu_up.clear_widgets()
-        self.display_button_up()
-        for item, status_item in temporary_list:
-            if item and status_item:
-                if item.text != status_item[1]['value']:
-                    item.text = status_item[1]['value']
-                    item.index = status_item[1]['begin_line']
-                if item.url != status_item[1].get('url', ''):
-                    item.url = status_item[1].get('url', '')
-            elif item and not status_item:
-                self.ids.menu_list.remove_widget(item)
-                self.items.remove(item)
-            elif status_item and not item:
-                item = MenuItem(text=status_item[1]['value'], index=status_item[1]['begin_line'], url=status_item[1].get('url', ''))
-                self.ids.menu_list.add_widget(item)
-                self.items.append(item)
-            # self.ids.menu_list.clear_widgets()
-            # for index, status_item in sorted(self.model.lines.items()):
-                # item = MenuItem(text=status_item['value'], index=int(index), url=status_item.get('url', ''))
-                # self.ids.menu_list.add_widget(item)
-        self.display_button_down()
-        if self.model.scroll_reset:
-            self.scroll_to(self.items[0])
+        """
+        Refresh view and move scroll view to active item
+        """
+        self.data = self.model.get_data()
+        shift = self.height / dp(56) - 1 # retirer une ligne pour avoir la reference en haut de l'item plutot qu'en bas
+        shifted = self.model.total_line - shift
+        select = self.model.selected_line - 1
+        total = self.model.total_line - 1
+        self.scroll_y = 1 - (select / (total - shift))
 
-    def display_button_up(self):
-        if self.model.up_visible:
-            menu_up = self.ids.menu_up
-            menu_up.height = dp(50)
-            menu_up.opacity = 1
-            menu_up.disabled = False
-            button = self.ids.button_up
-            button.height = dp(50)
-            button.opacity = 1
-            button.disabled = False
-        else:
-            menu_up = self.ids.menu_up
-            menu_up.height = 0
-            menu_up.opacity = 0
-            menu_up.disabled = True
-            button = self.ids.button_up
-            button.height = 0
-            button.opacity = 0
-            button.disabled = True
-
-    def display_button_down(self):
-        if self.model.down_visible:
-            menu_down = self.ids.menu_down
-            menu_down.height = dp(50)
-            menu_down.opacity = 1
-            menu_down.disabled = False
-            button = self.ids.button_down
-            button.height = dp(50)
-            button.opacity = 1
-            button.disabled = False
-        else:
-            menu_down = self.ids.menu_down
-            menu_down.height = 0
-            menu_down.opacity = 0
-            menu_down.disabled = True
-            button = self.ids.button_down
-            button.height = 0
-            button.opacity = 0
-            button.disabled = True
 
 Builder.load_file(str(Path(__file__).parent.joinpath('menu.kv')))

@@ -35,7 +35,6 @@ class ExploreView(MDScreen):
         Window.bind(on_keyboard=self.android_back_click)
         self.top_controller.set_previous('input')
         self.explore_controller.refresh_menu()
-        self.explore_controller.start_clock()
         self.bottom_controller.set_screen()
 
     def on_leave(self):
