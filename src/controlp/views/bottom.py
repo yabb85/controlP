@@ -12,6 +12,7 @@ class BottomView(MDFloatLayout):
     bottom_model = ObjectProperty()
     active = BooleanProperty(False)
     screen = StringProperty()
+    play = BooleanProperty(False)
 
     # def __init__(self, **kwargs):
         # super().__init__(*kwargs)
@@ -37,9 +38,13 @@ class BottomView(MDFloatLayout):
     def load(self, dt):
         self.amplifier_controller.load()
 
+    def refresh_view(self):
+        self.bottom_controller.refresh_view()
+
     def model_is_changed(self):
         self.active = self.amplifier_model.active
         self.screen = self.bottom_model.screen
+        self.play = self.bottom_model.play
 
 
 Builder.load_file(str(Path(__file__).parent.joinpath('bottom.kv')))

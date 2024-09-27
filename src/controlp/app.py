@@ -33,10 +33,10 @@ class ControlPApp(MDApp):
         self.input_controller = InputController(self, self.input_model)
         self.top_controller = TopController(self, self.top_model, self.input_model)
         self.explore_controller = ExploreController(self, self.explore_model, self.play_model)
-        self.play_controller = PlayController(self, self.play_model)
+        self.play_controller = PlayController(self, self.play_model, self.bottom_model)
         self.amplifier_controller = AmplifierController(self, self.amplifier_model)
         self.cd_player_controller = CDPlayerController(self, self.cd_player_model)
-        self.bottom_controller = BottomController(self, self.bottom_model)
+        self.bottom_controller = BottomController(self, self.bottom_model, self.explore_controller)
 
         self.home_view = HomeView(controller=self.home_controller, model=self.home_model)
         self.input_view = InputView(

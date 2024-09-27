@@ -1,4 +1,3 @@
-from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty, BooleanProperty, ColorProperty
 from kivymd.uix.boxlayout import MDBoxLayout

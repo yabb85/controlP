@@ -6,22 +6,28 @@ from kivy.clock import Clock
 
 class PlayController:
 
-    def __init__(self, app, play_model):
+    def __init__(self, app, play_model, bottom_model):
         self.app = app
         self.play_model = play_model
+        self.bottom_model = bottom_model
         self.event = None
+        self.cpt = 0
 
     def refresh_status(self):
+        print('refresh')
         status = self.app.network_player.screen_status()
         view_type = status.get('type', None)
         if view_type and view_type == '01':
             self.app.set_screen('explore')
+            self.bottom_model.set_play(False)
         elif view_type and (view_type == '02' or view_type == '03'):
             img_url = self.app.network_player.img_status()
             status.update(img_url)
             self.play_model.load(status)
+            self.bottom_model.set_play(True)
         elif view_type and view_type == '06':
             sleep(0.1)
+            self.bottom_model.set_play(False)
             self.refresh_status()
 
     def previous(self):
@@ -55,15 +61,20 @@ class PlayController:
 
     def clock_refresh(self, dt):
         diff = timedelta(milliseconds=dt * 1000)
-        if self.play_model.play == 2:
-            self.play_model.elapsed_time_s += diff
-            if self.play_model.elapsed_time_s < self.play_model.duration_s:
-                minutes = int(self.play_model.elapsed_time_s / timedelta(minutes=1))
-                seconds = self.play_model.elapsed_time_s.seconds % 60
-                self.play_model.elapsed_time = f'{minutes}:{seconds:02}'
-                self.play_model.notify_observers()
-            else:
-                self.refresh_status()
+        if self.cpt >= 10:
+            self.refresh_status()
+            self.cpt = 0
+        else:
+            self.cpt += 1
+            if self.play_model.play == 2:
+                self.play_model.elapsed_time_s += diff
+                if self.play_model.elapsed_time_s < self.play_model.duration_s:
+                    minutes = int(self.play_model.elapsed_time_s / timedelta(minutes=1))
+                    seconds = self.play_model.elapsed_time_s.seconds % 60
+                    self.play_model.elapsed_time = f'{minutes}:{seconds:02}'
+                    self.play_model.notify_observers()
+                else:
+                    self.refresh_status()
 
     def back_screen(self):
         self.app.network_player.ret()

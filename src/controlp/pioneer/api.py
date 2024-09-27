@@ -435,7 +435,7 @@ class Pioneer(object):
         """
         Go screen to current playing
         """
-        self._send_command('18PB')
+        self._send_command('18PB', False)
 
     def stop(self):
         """
