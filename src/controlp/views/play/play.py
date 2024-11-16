@@ -25,6 +25,7 @@ class PlayView(MDScreen):
     def on_enter(self):
         Window.bind(on_keyboard=self.android_back_click)
         self.top_controller.set_previous('explore')
+        self.play_controller.refresh_status()
         self.play_controller.start_clock()
         self.bottom_controller.set_screen()
 
