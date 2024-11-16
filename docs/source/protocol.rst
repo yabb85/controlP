@@ -1,13 +1,24 @@
 Protocol definition
 ===================
 
-This page explain the protocol used by pioneer N-50A.
-The explaination is revert engineering of network player with wireshark.
 
-The communication between your application and the player is a socket opened on port 8102.
-If you use a NAS to store your files you must use http to retrieve the cover of songs.
-The protocol have two command type, the first is the command without response and the second is command with response.
+Cette page explique le protocol de communication pioneer qui a été utlisé pour le lecteur reseau N-50A.
+Cette documentation a été obtenu par ingenieurie inverse a l'aide de l'outil wireshark, d'un lecteur N-50A et de l'application control.
 
+lecteur <-- ethernet --> pc <--wifi --> smartphone
+
+La communication entre l'application et le lecteur s'effectue sur un socker ouvert avec le port 8102.
+Les details de communication peuvent etre obtenu par upnp a l'aide d'un requete ssdp.
+Cependant la reponse retourné par le lecteur contient un xml malformé et ne peux etre lu par les librairie upnp standard.
+Si un NAS est utilisé pour stocker les fichier, il est possible d'utiliser http pour retrouver les jacquettes des musiques.
+Le protocol utilise deux types de commandes, le premier type est une commande sans reponse et le second est une commande avec reponse
+
+
+
+Todo
+----
+
+    - Understand the usage of ICA command and response
 
 Network player
 --------------
@@ -107,29 +118,31 @@ the response of this command is
 Music player
 ~~~~~~~~~~~~
 
-+------------------+----------+
-| order            | commande |
-+==================+==========+
-| play             | 10PB\\r  |
-+------------------+----------+
-| pause            | 11PB\\r  |
-+------------------+----------+
-| precedent        | 12PB\\r  |
-+------------------+----------+
-| suivant          | 13PB\\r  |
-+------------------+----------+
-| stop             | 20PB\\r  |
-+------------------+----------+
-| entrer           | 30PB\\r  |
-+------------------+----------+
-| return           | 31PB\\r  |
-+------------------+----------+
-| ajoute au favori | 32PB\\r  |
-+------------------+----------+
-| repeat           | 34PB\\r  |
-+------------------+----------+
-| shuffle          | 35PB\\r  |
-+------------------+----------+
++---------------------+----------+
+| order               | commande |
++=====================+==========+
+| play                | 10PB\\r  |
++---------------------+----------+
+| pause               | 11PB\\r  |
++---------------------+----------+
+| precedent           | 12PB\\r  |
++---------------------+----------+
+| suivant             | 13PB\\r  |
++---------------------+----------+
+| display play screen | 18PB\\r  |
++---------------------+----------+
+| stop                | 20PB\\r  |
++---------------------+----------+
+| entrer              | 30PB\\r  |
++---------------------+----------+
+| return              | 31PB\\r  |
++---------------------+----------+
+| ajoute au favori    | 32PB\\r  |
++---------------------+----------+
+| repeat              | 34PB\\r  |
++---------------------+----------+
+| shuffle             | 35PB\\r  |
++---------------------+----------+
 
 
 Screen status
@@ -149,14 +162,14 @@ this command return the following responses:
 +---------------------------+-------------------------+
 | type of information       | response                |
 +===========================+=========================+
-| screen header information | GCPaabcdefghijkkklmm"n" | 
+| screen header information | GCPaabcdefghijkkklmm"n" |
 +---------------------------+-------------------------+
 | screen information        | GDPaaaaabbbbbccccc      |
 +---------------------------+-------------------------+
 | screen line information   | GEPaabcc"d"             |
 +---------------------------+-------------------------+
 
-Often the response contains several value of this table. 
+Often the response contains several value of this table.
 
 Example for a screen on song played::
 
@@ -166,10 +179,11 @@ Example when screen display a song list::
 
     'GBP08\r\nGCP01110100000000200"Garbage"\r\nGDP000010000800012\r\nGEP01002"Supervixen"\r\nGEP02102"Queer"\r\nGEP03002"Only Happy When It Rains"\r\nGEP04002"As Heaven Is Wide"\r\nGEP05002"Not My Idea"\r\nGEP06002"A Stroke Of Luck"\r\nGEP07002"Vow"\r\nGEP08002"Stupid Girl"\r\n'
 
+
 GBP
 ***
 
-First instructtion returned when the scrren status is required, explain the number of GEP must be parsed.
+First instructtion returned when the screen status is required, explain the number of GEP must be parsed.
 
 +-----+----+
 | GBP | aa |
@@ -204,7 +218,7 @@ Each field have following description
 +=======+=========================+
 | aa    | screen type             |
 +-------+-------------------------+
-| b     |                         | 
+| b     |                         |
 +-------+-------------------------+
 | c     | top menu button enabled |
 +-------+-------------------------+
@@ -222,7 +236,7 @@ Each field have following description
 +-------+-------------------------+
 | j     |                         |
 +-------+-------------------------+
-| kkk   | view type               | 
+| kkk   | view type               |
 +-------+-------------------------+
 | l     | play status             |
 +-------+-------------------------+
@@ -295,6 +309,7 @@ Example::
 | ccccc | total number of lines   |
 +-------+-------------------------+
 
+
 GEP
 ***
 
@@ -323,6 +338,7 @@ Example::
 Image information
 ~~~~~~~~~~~~~~~~~
 
+Cette commande permet de connaite l'image affiché sur l'ecran du lecteur
 
 +---------------+---------+
 | order         | command |
@@ -401,8 +417,8 @@ Each field ahve following description
 
 
 
-Amplifactor
------------
+Amplifier
+---------
 
 
 Power
@@ -440,3 +456,34 @@ Source
 +--------+-----------------+
 
 
+Lecteur CD
+----------
+
+Power
+~~~~~
+
+Like amplifier the cd player have only one command to start and stop without status of power.
+
++------------+--------------+
+| order      | command      |
++============+==============+
+| Start/Stop | 0A21CFFFFROI |
++------------+--------------+
+
+
+Track
+~~~~~
+
++-----------+--------------+
+| order     | command      |
++===========+==============+
+| precedent | 0A211FFFFROI |
++-----------+--------------+
+| lecture   | 0A217FFFFROI |
++-----------+--------------+
+| suivant   | 0A210FFFFROI |
++-----------+--------------+
+| stop      | 0A216FFFFROI |
++-----------+--------------+
+| pause     | 0A218FFFFROI |
++-----------+--------------+

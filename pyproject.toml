@@ -26,3 +26,6 @@ build = [
     "cython>=3.0.11",
     "buildozer>=1.5.0",
 ]
+doc = [
+    "sphinx>=8.0.2",
+]
