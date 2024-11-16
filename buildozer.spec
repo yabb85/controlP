@@ -314,6 +314,7 @@ android.allow_backup = True
 
 # (str) The format used to package the app for release mode (aab or apk or aar).
 # android.release_artifact = aab
+android.release_artifact = apk
 
 # (str) The format used to package the app for debug mode (apk or aar).
 # android.debug_artifact = apk
@@ -358,7 +359,7 @@ android.allow_backup = True
 
 # (str) extra command line arguments to pass when invoking pythonforandroid.toolchain
 #p4a.extra_args =
-p4a.extra_args = --blacklist-requirements=sqlite3
+p4a.extra_args = --blacklist-requirements=argparse,bz2,calendar,csv,email,gzip,lzma,mailbox,sqlite3,zipapp,zipimport,zlib,zoneinfo
 
 
 
