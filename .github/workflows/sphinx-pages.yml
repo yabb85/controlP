@@ -45,15 +45,10 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Build with Sphinx
         run: sphinx-build -b html ./docs/source ./docs/build
-      - name: Display files
-        run: |
-          ls
-          ls docs
-          ls docs/build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./docs/buid
+          path: ./docs/bulid
 
   # Deployment job
   deploy:
