@@ -45,7 +45,7 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Build with Sphinx
         run: |
-          echo "${env.root_url}"
+          echo "${root_url}"
           sphinx-build -b html ./docs/source ./docs/build
           sphinx-build -b html -D language=en ./docs/source ./docs/build/en
         env:
