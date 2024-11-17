@@ -32,8 +32,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       root_url: ${{ steps.deployment.outputs.page_url }}
-    environment:
-      root_url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python 3.11
