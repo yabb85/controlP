@@ -30,8 +30,6 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
-    env:
-      root_url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python 3.11
@@ -49,6 +47,8 @@ jobs:
         run: |
           sphinx-build -b html ./docs/source ./docs/build
           sphinx-build -b html -D language=en ./docs/source ./docs/build/en
+        env:
+          root_url: ${{ steps.deployment.outputs.page_url }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
