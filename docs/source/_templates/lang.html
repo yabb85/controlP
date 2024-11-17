@@ -1,0 +1,8 @@
+<h3>{{ _('Langues') }}</h3>
+{% if languages|length >= 1 %}
+    <ul>
+        {% for the_language, url in languages %}
+        <li><a href="{{ url }}">{{ the_language }}</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}

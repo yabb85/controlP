@@ -3,31 +3,30 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to ControlP's documentation!
-====================================
+Bienvenue dans la documentation de ControlP !
+=============================================
 
-This project try to provide interface to command your N-50A network player.
-It can also command your amplificator if cable "control" is plugged between your
-amplificator and your network player.
-It can run on Linux and Android, maybe on windows and macOS but not tested.
-This project is reverse engineering of Pioneer protocol and it can be have some limitations.
+Ce projet tente de fournir une interface pour commander votre lecteur réseau N-50A.
+Il peut également commander votre amplificateur si un câble "contrôle" est branché entre
+votre amplificateur et votre lecteur réseau.
+Il peut fonctionner sous Linux et Android, peut-être sous Windows et macOS mais pas encore testé.
+Ce projet est une rétro-ingénierie du protocole Pioneer et il peut avoir certaines limitations.
 
-
-Known issue:
-    - latency on menu
-    - slider on player view display only, it is not possible to move in music with slider.
-    - album cover not correctly displayed in menu
-
-
-Work in progress:
-    - preload menu list in background to improve navigation
+Problemes connues:
+    - latence dans les menus
+    - curseur sur l'affichage de la vue en lecture uniquement, il n'est pas possible de se déplacer dans la musique avec le curseur.
+    - la couverture de l'album n'est pas correctement affichée dans le menu
 
 
-Todo:
-    - add index to navigate by letter if list is too long
+Travail en cours:
+    - précharger les menu en arriere plan pour améliorer la navigation.
 
 
-The most important part of this documentation is the explaination of the protocol
+A faire:
+    - ajouter un index pour naviguer par lettre si la liste est trop longue
+
+
+La partie la plus importante de cette documentation est l'explication du protocole
 
 
 
@@ -36,12 +35,3 @@ The most important part of this documentation is the explaination of the protoco
    :caption: Contents:
 
    protocol
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

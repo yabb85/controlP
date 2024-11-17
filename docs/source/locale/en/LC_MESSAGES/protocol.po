@@ -1,0 +1,928 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2019, Laurent Hory
+# This file is distributed under the same license as the ControlP package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ControlP \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-17 22:56+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../source/protocol.rst:2
+msgid "Définition du protocol"
+msgstr "Protocol definition"
+
+#: ../../source/protocol.rst:5
+msgid ""
+"Cette page explique le protocol de communication pioneer qui a été utlisé"
+" pour le lecteur reseau N-50A. Cette documentation a été obtenu par "
+"ingenieurie inverse a l'aide de l'outil wireshark, d'un lecteur N-50A et "
+"de l'application control."
+msgstr ""
+
+#: ../../source/protocol.rst:8
+msgid "lecteur <-- ethernet --> pc <-- wifi --> smartphone"
+msgstr "player <-- ethernet --> pc <-- wifi --> smartphone"
+
+#: ../../source/protocol.rst:10
+msgid ""
+"La communication entre l'application et le lecteur s'effectue sur un "
+"socker ouvert avec le port 8102. Les details de communication peuvent "
+"etre obtenu par upnp a l'aide d'un requete ssdp. Cependant la reponse "
+"retourné par le lecteur contient un xml malformé et ne peux etre lu par "
+"les librairie upnp standard. Si un NAS est utilisé pour stocker les "
+"fichier, il est possible d'utiliser http pour retrouver les jacquettes "
+"des musiques. Le protocol utilise deux types de commandes, le premier "
+"type est une commande sans reponse et le second est une commande avec "
+"reponse"
+msgstr ""
+
+#: ../../source/protocol.rst:19
+msgid "A faire"
+msgstr "Todo"
+
+#: ../../source/protocol.rst:21
+msgid "Comprendre l'usage de la commande ICA ainsi que ses réponses"
+msgstr "Understand the usage of ICA command and response"
+
+#: ../../source/protocol.rst:24
+msgid "Lecteur reseau"
+msgstr "Network player"
+
+#: ../../source/protocol.rst:28 ../../source/protocol.rst:427
+#: ../../source/protocol.rst:465
+msgid "Alimentation"
+msgstr "Power"
+
+#: ../../source/protocol.rst:30
+msgid "Cette section explique comment controller l'alimation du lecteur"
+msgstr "This section explain how to manage the power of your player"
+
+#: ../../source/protocol.rst:33 ../../source/protocol.rst:44
+#: ../../source/protocol.rst:89 ../../source/protocol.rst:122
+#: ../../source/protocol.rst:154 ../../source/protocol.rst:346
+#: ../../source/protocol.rst:375 ../../source/protocol.rst:434
+#: ../../source/protocol.rst:444 ../../source/protocol.rst:455
+#: ../../source/protocol.rst:470 ../../source/protocol.rst:480
+msgid "ordre"
+msgstr "order"
+
+#: ../../source/protocol.rst:33 ../../source/protocol.rst:44
+#: ../../source/protocol.rst:65 ../../source/protocol.rst:89
+#: ../../source/protocol.rst:122 ../../source/protocol.rst:154
+#: ../../source/protocol.rst:346 ../../source/protocol.rst:375
+#: ../../source/protocol.rst:434 ../../source/protocol.rst:444
+#: ../../source/protocol.rst:455 ../../source/protocol.rst:470
+#: ../../source/protocol.rst:480
+msgid "commande"
+msgstr "command"
+
+#: ../../source/protocol.rst:35 ../../source/protocol.rst:55
+msgid "ON"
+msgstr "ON"
+
+#: ../../source/protocol.rst:35
+msgid "PO\\\\r"
+msgstr "PO\\\\r"
+
+#: ../../source/protocol.rst:37 ../../source/protocol.rst:57
+msgid "OFF"
+msgstr "OFF"
+
+#: ../../source/protocol.rst:37
+msgid "PF\\\\r"
+msgstr "PF\\\\r"
+
+#: ../../source/protocol.rst:41
+msgid ""
+"Pour connaitre le status de votre lecteur vous pouvez envoyer la commande"
+" suivante"
+msgstr "To know the state of your player you can send the command"
+
+#: ../../source/protocol.rst:46 ../../source/protocol.rst:53
+#: ../../source/protocol.rst:91 ../../source/protocol.rst:156
+msgid "status"
+msgstr "status"
+
+#: ../../source/protocol.rst:46
+msgid "?P\\\\r"
+msgstr "?P\\\\r"
+
+#: ../../source/protocol.rst:50 ../../source/protocol.rst:94
+msgid "La réponse de cette commande est"
+msgstr "The response of this command is"
+
+#: ../../source/protocol.rst:53 ../../source/protocol.rst:97
+#: ../../source/protocol.rst:163 ../../source/protocol.rst:352
+#: ../../source/protocol.rst:390
+msgid "réponse"
+msgstr "response"
+
+#: ../../source/protocol.rst:55
+msgid "PWR0"
+msgstr ""
+
+#: ../../source/protocol.rst:57
+msgid "PWR2"
+msgstr ""
+
+#: ../../source/protocol.rst:62
+msgid "Entrées"
+msgstr "Inputs"
+
+#: ../../source/protocol.rst:65 ../../source/protocol.rst:97
+msgid "entrée"
+msgstr "Input"
+
+#: ../../source/protocol.rst:67 ../../source/protocol.rst:99
+msgid "DAC"
+msgstr "DAC"
+
+#: ../../source/protocol.rst:67
+msgid "13FN\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:69 ../../source/protocol.rst:101
+msgid "ipod/usb façade"
+msgstr "ipod/usb front"
+
+#: ../../source/protocol.rst:69
+msgid "17FN\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:71 ../../source/protocol.rst:103
+msgid "radio"
+msgstr "radio"
+
+#: ../../source/protocol.rst:71
+msgid "38FN\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:73 ../../source/protocol.rst:105
+msgid "NAS"
+msgstr "NAS"
+
+#: ../../source/protocol.rst:73
+msgid "44FN\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:75 ../../source/protocol.rst:107
+msgid "favoris"
+msgstr "favorite"
+
+#: ../../source/protocol.rst:75
+msgid "45FN\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:77 ../../source/protocol.rst:109
+msgid "spotify"
+msgstr ""
+
+#: ../../source/protocol.rst:77
+msgid "57FN\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:79 ../../source/protocol.rst:111
+msgid "entrée numérique 1"
+msgstr "digital input 1"
+
+#: ../../source/protocol.rst:79
+msgid "59FN\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:81 ../../source/protocol.rst:113
+msgid "entrée numérique 2"
+msgstr "digital input 2"
+
+#: ../../source/protocol.rst:81
+msgid "60FN\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:83 ../../source/protocol.rst:115
+msgid "ipod/usb arrière"
+msgstr "ipod/usb back"
+
+#: ../../source/protocol.rst:83
+msgid "61FN\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:86
+msgid ""
+"Pour connaitre l'entrée selectionné par votre lecteur réseau, vous pouvez"
+" utiliser la commande suivante:"
+msgstr ""
+"To know the input selected by your network player you can use the "
+"following command:"
+
+#: ../../source/protocol.rst:91
+msgid "?F\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:99
+msgid "FN13"
+msgstr ""
+
+#: ../../source/protocol.rst:101
+msgid "FN17"
+msgstr ""
+
+#: ../../source/protocol.rst:103
+msgid "FN38"
+msgstr ""
+
+#: ../../source/protocol.rst:105
+msgid "FN44"
+msgstr ""
+
+#: ../../source/protocol.rst:107
+msgid "FN45"
+msgstr ""
+
+#: ../../source/protocol.rst:109
+msgid "FN57"
+msgstr ""
+
+#: ../../source/protocol.rst:111
+msgid "FN59"
+msgstr ""
+
+#: ../../source/protocol.rst:113
+msgid "FN60"
+msgstr ""
+
+#: ../../source/protocol.rst:115
+msgid "FN61"
+msgstr ""
+
+#: ../../source/protocol.rst:119
+msgid "Lecteur de musique"
+msgstr "Music player"
+
+#: ../../source/protocol.rst:124
+msgid "play"
+msgstr "lecture"
+
+#: ../../source/protocol.rst:124
+msgid "10PB\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:126 ../../source/protocol.rst:286
+#: ../../source/protocol.rst:490
+msgid "pause"
+msgstr ""
+
+#: ../../source/protocol.rst:126
+msgid "11PB\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:128 ../../source/protocol.rst:482
+msgid "precedent"
+msgstr "previous"
+
+#: ../../source/protocol.rst:128
+msgid "12PB\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:130 ../../source/protocol.rst:486
+msgid "suivant"
+msgstr "next"
+
+#: ../../source/protocol.rst:130
+msgid "13PB\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:132
+msgid "afficher l'écran de lecture"
+msgstr "display play screen"
+
+#: ../../source/protocol.rst:132
+msgid "18PB\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:134 ../../source/protocol.rst:488
+msgid "stop"
+msgstr "stop"
+
+#: ../../source/protocol.rst:134
+msgid "20PB\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:136
+msgid "entrer"
+msgstr "enter"
+
+#: ../../source/protocol.rst:136
+msgid "30PB\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:138
+msgid "retour"
+msgstr "return"
+
+#: ../../source/protocol.rst:138
+msgid "31PB\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:140
+msgid "ajouter aux favoris"
+msgstr "add to favorite"
+
+#: ../../source/protocol.rst:140
+msgid "32PB\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:142
+msgid "répéter"
+msgstr "repeat"
+
+#: ../../source/protocol.rst:142
+msgid "34PB\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:144
+msgid "mélanger"
+msgstr "shuffle"
+
+#: ../../source/protocol.rst:144
+msgid "35PB\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:149
+msgid "État de l'ecran"
+msgstr "Screen status"
+
+#: ../../source/protocol.rst:151
+msgid ""
+"Pour connaitre les informations affiché a l'ecran, vous pouvez execture "
+"la commande suivante:"
+msgstr ""
+"To know the informations display on screen you can execute the following "
+"command:"
+
+#: ../../source/protocol.rst:156
+msgid "?GAP\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:160
+msgid "Cette commande retourne la réponse suivante:"
+msgstr "this command return the following responses:"
+
+#: ../../source/protocol.rst:163
+msgid "type d'information"
+msgstr "type of information"
+
+#: ../../source/protocol.rst:165
+msgid "informations d'en-tête d'écran"
+msgstr "screen header information"
+
+#: ../../source/protocol.rst:165
+msgid "GCPaabcdefghijkkklmm\"n\""
+msgstr ""
+
+#: ../../source/protocol.rst:167
+msgid "informations sur l'écran"
+msgstr "screen information"
+
+#: ../../source/protocol.rst:167
+msgid "GDPaaaaabbbbbccccc"
+msgstr ""
+
+#: ../../source/protocol.rst:169
+msgid "informations sur la ligne d'écran"
+msgstr "screen line information"
+
+#: ../../source/protocol.rst:169
+msgid "GEPaabcc\"d\""
+msgstr ""
+
+#: ../../source/protocol.rst:172
+msgid ""
+"Souvent la réponse contient plusieurs des valeurs contenu dans cette "
+"table."
+msgstr "Often the response contains several values of this table."
+
+#: ../../source/protocol.rst:174
+msgid "Exemple d'écran sur une chanson jouée::"
+msgstr "Example for a screen on song played::"
+
+#: ../../source/protocol.rst:178
+msgid "Exemple lorsque l'écran affiche une liste de chansons::"
+msgstr "Example when screen display a song list::"
+
+#: ../../source/protocol.rst:184 ../../source/protocol.rst:189
+msgid "GBP"
+msgstr ""
+
+#: ../../source/protocol.rst:186
+msgid ""
+"Première instruction renvoyée lorsque l'état de l'écran est requis, "
+"explique le nombre de GEP qui doivent être analysés."
+msgstr ""
+"First instructtion returned when the screen status is required, explain "
+"the number of GEP must be parsed."
+
+#: ../../source/protocol.rst:189 ../../source/protocol.rst:197
+#: ../../source/protocol.rst:206 ../../source/protocol.rst:219
+#: ../../source/protocol.rst:319 ../../source/protocol.rst:330
+msgid "aa"
+msgstr ""
+
+#: ../../source/protocol.rst:192 ../../source/protocol.rst:214
+#: ../../source/protocol.rst:400
+msgid "Chaque champ a la description suivante"
+msgstr "Each field have following description"
+
+#: ../../source/protocol.rst:195 ../../source/protocol.rst:217
+#: ../../source/protocol.rst:305 ../../source/protocol.rst:328
+#: ../../source/protocol.rst:360 ../../source/protocol.rst:381
+#: ../../source/protocol.rst:403
+msgid "champs"
+msgstr "fields"
+
+#: ../../source/protocol.rst:195 ../../source/protocol.rst:217
+#: ../../source/protocol.rst:252 ../../source/protocol.rst:269
+#: ../../source/protocol.rst:282 ../../source/protocol.rst:305
+#: ../../source/protocol.rst:328 ../../source/protocol.rst:360
+#: ../../source/protocol.rst:381 ../../source/protocol.rst:403
+msgid "description"
+msgstr ""
+
+#: ../../source/protocol.rst:197
+msgid "nombre de lignes affichées à l'écran"
+msgstr "number of line displayed on screen"
+
+#: ../../source/protocol.rst:201 ../../source/protocol.rst:206
+msgid "GCP"
+msgstr ""
+
+#: ../../source/protocol.rst:203
+msgid "Cette réponse est envoyée pour décrire la vue"
+msgstr "This response is send to describe the view"
+
+#: ../../source/protocol.rst:206 ../../source/protocol.rst:221
+#: ../../source/protocol.rst:319 ../../source/protocol.rst:332
+#: ../../source/protocol.rst:364
+msgid "b"
+msgstr ""
+
+#: ../../source/protocol.rst:206 ../../source/protocol.rst:223
+msgid "c"
+msgstr ""
+
+#: ../../source/protocol.rst:206 ../../source/protocol.rst:225
+msgid "d"
+msgstr ""
+
+#: ../../source/protocol.rst:206 ../../source/protocol.rst:227
+#: ../../source/protocol.rst:413
+msgid "e"
+msgstr ""
+
+#: ../../source/protocol.rst:206 ../../source/protocol.rst:229
+msgid "f"
+msgstr ""
+
+#: ../../source/protocol.rst:206 ../../source/protocol.rst:231
+#: ../../source/protocol.rst:417
+msgid "g"
+msgstr ""
+
+#: ../../source/protocol.rst:206 ../../source/protocol.rst:233
+msgid "h"
+msgstr ""
+
+#: ../../source/protocol.rst:206 ../../source/protocol.rst:235
+msgid "i"
+msgstr ""
+
+#: ../../source/protocol.rst:206 ../../source/protocol.rst:237
+msgid "j"
+msgstr ""
+
+#: ../../source/protocol.rst:206 ../../source/protocol.rst:239
+msgid "kkk"
+msgstr ""
+
+#: ../../source/protocol.rst:206 ../../source/protocol.rst:241
+msgid "l"
+msgstr ""
+
+#: ../../source/protocol.rst:206 ../../source/protocol.rst:243
+msgid "mm"
+msgstr ""
+
+#: ../../source/protocol.rst:206
+msgid "\"n\""
+msgstr ""
+
+#: ../../source/protocol.rst:209 ../../source/protocol.rst:299
+#: ../../source/protocol.rst:322 ../../source/protocol.rst:396
+msgid "Exemple::"
+msgstr "Example::"
+
+#: ../../source/protocol.rst:219
+msgid "type d'écran"
+msgstr "screen type"
+
+#: ../../source/protocol.rst:223
+msgid "bouton top menu activé"
+msgstr "top menu button enabled"
+
+#: ../../source/protocol.rst:227
+msgid "bouton retour activé"
+msgstr "return button enabled"
+
+#: ../../source/protocol.rst:231
+msgid "mode mélangé activé"
+msgstr "shuffle enabled"
+
+#: ../../source/protocol.rst:233
+msgid "mode répété activé"
+msgstr "repeat enabled"
+
+#: ../../source/protocol.rst:239
+msgid "type de la vue"
+msgstr "view type"
+
+#: ../../source/protocol.rst:241
+msgid "status de lecture"
+msgstr "play status"
+
+#: ../../source/protocol.rst:245
+msgid "n"
+msgstr ""
+
+#: ../../source/protocol.rst:245
+msgid "titre"
+msgstr "title"
+
+#: ../../source/protocol.rst:249
+msgid ""
+"Le champ type d'écran peut avoir differentes valeurs decrite dans le "
+"tableau suivant:"
+msgstr "The screen type can be have several value described in following table:"
+
+#: ../../source/protocol.rst:252 ../../source/protocol.rst:269
+#: ../../source/protocol.rst:282
+msgid "code"
+msgstr ""
+
+#: ../../source/protocol.rst:254
+msgid "00"
+msgstr ""
+
+#: ../../source/protocol.rst:254
+msgid "erreur"
+msgstr "error"
+
+#: ../../source/protocol.rst:256
+msgid "01"
+msgstr ""
+
+#: ../../source/protocol.rst:256
+msgid "liste"
+msgstr "list"
+
+#: ../../source/protocol.rst:258
+msgid "02"
+msgstr ""
+
+#: ../../source/protocol.rst:258
+msgid "file info"
+msgstr ""
+
+#: ../../source/protocol.rst:260
+msgid "03"
+msgstr ""
+
+#: ../../source/protocol.rst:260
+msgid "file info with pause"
+msgstr ""
+
+#: ../../source/protocol.rst:262
+msgid "06"
+msgstr ""
+
+#: ../../source/protocol.rst:262
+msgid "chargement"
+msgstr "loading"
+
+#: ../../source/protocol.rst:266
+msgid "La vue peut afficher different types d'informations."
+msgstr "The view can be display several type of informations."
+
+#: ../../source/protocol.rst:271
+msgid "000"
+msgstr ""
+
+#: ../../source/protocol.rst:271
+msgid "the view is a list"
+msgstr ""
+
+#: ../../source/protocol.rst:273
+msgid "002"
+msgstr ""
+
+#: ../../source/protocol.rst:273
+msgid "the view display the root of music server"
+msgstr ""
+
+#: ../../source/protocol.rst:275
+msgid "110"
+msgstr ""
+
+#: ../../source/protocol.rst:275
+msgid "the view display information of file"
+msgstr ""
+
+#: ../../source/protocol.rst:279
+msgid "Le champ lecture affiche l'etat de la lecture courante"
+msgstr "The play field display the state of current play"
+
+#: ../../source/protocol.rst:284
+msgid "0"
+msgstr ""
+
+#: ../../source/protocol.rst:284
+msgid "stopé"
+msgstr "stopped"
+
+#: ../../source/protocol.rst:286
+msgid "1"
+msgstr ""
+
+#: ../../source/protocol.rst:288
+msgid "2"
+msgstr ""
+
+#: ../../source/protocol.rst:288 ../../source/protocol.rst:484
+msgid "lecture"
+msgstr "play"
+
+#: ../../source/protocol.rst:293 ../../source/protocol.rst:296
+msgid "GDP"
+msgstr ""
+
+#: ../../source/protocol.rst:296 ../../source/protocol.rst:307
+#: ../../source/protocol.rst:383 ../../source/protocol.rst:393
+#: ../../source/protocol.rst:405
+msgid "aaaaa"
+msgstr ""
+
+#: ../../source/protocol.rst:296 ../../source/protocol.rst:309
+#: ../../source/protocol.rst:385 ../../source/protocol.rst:393
+#: ../../source/protocol.rst:407
+msgid "bbbbb"
+msgstr ""
+
+#: ../../source/protocol.rst:296 ../../source/protocol.rst:311
+msgid "ccccc"
+msgstr ""
+
+#: ../../source/protocol.rst:307
+msgid "premiere ligne a l'ecran"
+msgstr "first line at screen"
+
+#: ../../source/protocol.rst:309
+msgid "derniere ligne a l'ecran"
+msgstr "last line at screen"
+
+#: ../../source/protocol.rst:311
+msgid "nombre total de lignes"
+msgstr "total number of lines"
+
+#: ../../source/protocol.rst:316 ../../source/protocol.rst:319
+msgid "GEP"
+msgstr ""
+
+#: ../../source/protocol.rst:319 ../../source/protocol.rst:334
+msgid "cc"
+msgstr ""
+
+#: ../../source/protocol.rst:319 ../../source/protocol.rst:336
+msgid "\"d\""
+msgstr ""
+
+#: ../../source/protocol.rst:330 ../../source/protocol.rst:407
+msgid "nombre de lignes"
+msgstr "number of lines"
+
+#: ../../source/protocol.rst:332
+msgid "ligne sélectionée"
+msgstr "selected line"
+
+#: ../../source/protocol.rst:336
+msgid "texte de la ligne"
+msgstr "text of line"
+
+#: ../../source/protocol.rst:341
+msgid "Information sur l'image"
+msgstr "Image information"
+
+#: ../../source/protocol.rst:343
+msgid "Cette commande permet de connaite l'image affiché sur l'ecran du lecteur"
+msgstr "This command allows you to know the image displayed on the player screen"
+
+#: ../../source/protocol.rst:348
+msgid "obetnir l'url de l'image"
+msgstr "get image url"
+
+#: ../../source/protocol.rst:348
+msgid "?GIC\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:355
+msgid "GIC"
+msgstr ""
+
+#: ../../source/protocol.rst:355 ../../source/protocol.rst:362
+msgid "aaa"
+msgstr ""
+
+#: ../../source/protocol.rst:355
+msgid "\"b\""
+msgstr ""
+
+#: ../../source/protocol.rst:362
+msgid "taille de l'url"
+msgstr "size of url"
+
+#: ../../source/protocol.rst:364 ../../source/protocol.rst:417
+msgid "url de l'image"
+msgstr "url of picture"
+
+#: ../../source/protocol.rst:369
+msgid "Information sur le répertoire"
+msgstr "Directory information"
+
+#: ../../source/protocol.rst:371
+msgid ""
+"Au lieu de lire a l'écran les informations du répertoire, vous pouvez "
+"demander directement les informations des répertoires et récupérer "
+"l'image associée."
+msgstr ""
+"Instead of read the screen information of directory you can request "
+"directly the information of directories and retrieve the picture "
+"associated."
+
+#: ../../source/protocol.rst:377
+msgid "obtenir la liste des répertoires et les images"
+msgstr "get directory list and pictures"
+
+#: ../../source/protocol.rst:377
+msgid "?GIAaaaaabbbbb\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:383
+msgid "number of the first line"
+msgstr ""
+
+#: ../../source/protocol.rst:385
+msgid "number of the last line"
+msgstr ""
+
+#: ../../source/protocol.rst:393
+msgid "GIB"
+msgstr ""
+
+#: ../../source/protocol.rst:393 ../../source/protocol.rst:409
+msgid "ccc"
+msgstr ""
+
+#: ../../source/protocol.rst:393 ../../source/protocol.rst:411
+msgid "dd"
+msgstr ""
+
+#: ../../source/protocol.rst:393
+msgid "\"e\""
+msgstr ""
+
+#: ../../source/protocol.rst:393 ../../source/protocol.rst:415
+msgid "fff"
+msgstr ""
+
+#: ../../source/protocol.rst:393
+msgid "\"g\""
+msgstr ""
+
+#: ../../source/protocol.rst:405
+msgid "nombre de lignes affichées a l'écran (entre 1 & 8 )"
+msgstr "number of line displayed on screen (between 1 & 8 )"
+
+#: ../../source/protocol.rst:411
+msgid "nombre de caracteres dans le nom du répertoire"
+msgstr "number of characters in directory name"
+
+#: ../../source/protocol.rst:413
+msgid "nom du répertoire"
+msgstr "directory name"
+
+#: ../../source/protocol.rst:415
+msgid "nombre de caracteres dans l'url de l'image"
+msgstr "number of characters in picture url"
+
+#: ../../source/protocol.rst:423
+msgid "Amplificateur"
+msgstr "Amplifier"
+
+#: ../../source/protocol.rst:429
+msgid ""
+"L'alimentation de l'amplificateur est un petit peu differente decelle du "
+"lecteur réseau. Il existe une unique commande pour démarrer ou arreter "
+"l'amplificateur. Aussi il n'est pas possible de savoir le status de "
+"l'alimentation de l'amplificateur."
+msgstr ""
+"The power of amplificator is little different than power of network "
+"player.You have only one command to start and stop the amplificator.Also "
+"it is not possible to know the state of power of amplificator."
+
+#: ../../source/protocol.rst:436 ../../source/protocol.rst:472
+msgid "Start/Stop"
+msgstr ""
+
+#: ../../source/protocol.rst:436
+msgid "0A51CFFFFROI\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:441
+msgid "Volume"
+msgstr ""
+
+#: ../../source/protocol.rst:446
+msgid "haut"
+msgstr "up"
+
+#: ../../source/protocol.rst:446
+msgid "0A50AFFFFROI\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:448
+msgid "bas"
+msgstr "down"
+
+#: ../../source/protocol.rst:448
+msgid "0A50BFFFFROI\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:452
+msgid "Source"
+msgstr ""
+
+#: ../../source/protocol.rst:457
+msgid "change"
+msgstr ""
+
+#: ../../source/protocol.rst:457
+msgid "0A555FFFFROI\\\\r"
+msgstr ""
+
+#: ../../source/protocol.rst:462
+msgid "Lecteur CD"
+msgstr "CD player"
+
+#: ../../source/protocol.rst:467
+msgid ""
+"Comme l'amplificateur le lecteur CD a une seule commande pour démarrer et"
+" arreter l'appareil sans retourn du status de l'alimentation."
+msgstr ""
+"Like amplifier the cd player have only one command to start and stop "
+"without status of power."
+
+#: ../../source/protocol.rst:472
+msgid "0A21CFFFFROI"
+msgstr ""
+
+#: ../../source/protocol.rst:477
+msgid "Piste"
+msgstr "Track"
+
+#: ../../source/protocol.rst:482
+msgid "0A211FFFFROI"
+msgstr ""
+
+#: ../../source/protocol.rst:484
+msgid "0A217FFFFROI"
+msgstr ""
+
+#: ../../source/protocol.rst:486
+msgid "0A210FFFFROI"
+msgstr ""
+
+#: ../../source/protocol.rst:488
+msgid "0A216FFFFROI"
+msgstr ""
+
+#: ../../source/protocol.rst:490
+msgid "0A218FFFFROI"
+msgstr ""

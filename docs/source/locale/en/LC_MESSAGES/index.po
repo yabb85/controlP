@@ -1,0 +1,89 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2019, Laurent Hory
+# This file is distributed under the same license as the ControlP package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ControlP \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-17 23:11+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../source/index.rst:33
+msgid "Contents:"
+msgstr ""
+
+#: ../../source/index.rst:7
+msgid "Bienvenue dans la documentation de ControlP !"
+msgstr "Welcome to ControlP's documentation!"
+
+#: ../../source/index.rst:9
+#, fuzzy
+msgid ""
+"Ce projet tente de fournir une interface pour commander votre lecteur "
+"réseau N-50A. Il peut également commander votre amplificateur si un câble"
+" \"contrôle\" est branché entre votre amplificateur et votre lecteur "
+"réseau. Il peut fonctionner sous Linux et Android, peut-être sous Windows"
+" et macOS mais pas encore testé. Ce projet est une rétro-ingénierie du "
+"protocole Pioneer et il peut avoir certaines limitations."
+msgstr ""
+"This project try to provide interface to command your N-50A network "
+"player.It can also command your amplificator if cable \"control\" is "
+"plugged between youramplificator and your network player.It can run on "
+"Linux and Android, maybe on windows and macOS but not tested.This project"
+" is reverse engineering of Pioneer protocol and it can be have some "
+"limitations."
+
+#: ../../source/index.rst:15
+msgid "Problemes connues:"
+msgstr "Known issue:"
+
+#: ../../source/index.rst:16
+msgid "latence dans les menus"
+msgstr "latency on menu"
+
+#: ../../source/index.rst:17
+msgid ""
+"curseur sur l'affichage de la vue en lecture uniquement, il n'est pas "
+"possible de se déplacer dans la musique avec le curseur."
+msgstr ""
+"slider on player view display only, it is not possible to move in music "
+"with slider."
+
+#: ../../source/index.rst:18
+msgid "la couverture de l'album n'est pas correctement affichée dans le menu"
+msgstr "album cover not correctly displayed in menu"
+
+#: ../../source/index.rst:21
+msgid "Travail en cours:"
+msgstr "Work in progress:"
+
+#: ../../source/index.rst:22
+msgid "précharger les menu en arriere plan pour améliorer la navigation."
+msgstr "preload menu list in background to improve navigation"
+
+#: ../../source/index.rst:25
+msgid "A faire:"
+msgstr "Todo"
+
+#: ../../source/index.rst:26
+msgid "ajouter un index pour naviguer par lettre si la liste est trop longue"
+msgstr "add index to navigate by letter if list is too long"
+
+#: ../../source/index.rst:29
+msgid ""
+"La partie la plus importante de cette documentation est l'explication du "
+"protocole"
+msgstr ""
+"The most important part of this documentation is the explaination of the "
+"protocol"
