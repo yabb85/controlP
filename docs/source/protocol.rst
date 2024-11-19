@@ -3,19 +3,19 @@ Définition du protocol
 
 
 Cette page explique le protocol de communication pioneer qui a été utlisé pour le lecteur reseau N-50A.
-Cette documentation a été obtenu par ingenieurie inverse a l'aide de l'outil wireshark, d'un lecteur N-50A et de l'application control.
+Cette documentation a été obtenue par ingenieurie inverse a l'aide de l'outil wireshark, d'un lecteur N-50A et de l'application control.
 
 lecteur <-- ethernet --> pc <-- wifi --> smartphone
 
 La communication entre l'application et le lecteur s'effectue sur un socker ouvert avec le port 8102.
 Les details de communication peuvent etre obtenu par upnp a l'aide d'un requete ssdp.
-Cependant la reponse retourné par le lecteur contient un xml malformé et ne peux etre lu par les librairie upnp standard.
-Si un NAS est utilisé pour stocker les fichier, il est possible d'utiliser http pour retrouver les jacquettes des musiques.
-Le protocol utilise deux types de commandes, le premier type est une commande sans reponse et le second est une commande avec reponse
+Cependant la reponse retourné par le lecteur contient un xml malformé et ne peut etre lu par les librairies upnp standard.
+Si un NAS est utilisé pour stocker les fichiers, il est possible d'utiliser http pour retrouver les jacquettes des musiques.
+Le protocol utilise deux types de commandes, le premier type est une commande sans reponse et le second est une commande avec reponse.
 
 
 
-A faire
+À faire
 -------
 
     - Comprendre l'usage de la commande ICA ainsi que ses réponses
@@ -148,7 +148,7 @@ Lecteur de musique
 État de l'ecran
 ~~~~~~~~~~~~~~~
 
-Pour connaitre les informations affiché a l'ecran, vous pouvez execture la commande suivante:
+Pour connaitre les informations affichées a l'ecran, vous pouvez execture la commande suivante:
 
 +--------+----------+
 | ordre  | commande |
@@ -399,23 +399,23 @@ Exemple::
 
 Chaque champ a la description suivante
 
-+--------+-----------------------------------------------------+
-| champs | description                                         |
-+========+=====================================================+
-| aaaaa  | nombre de lignes affichées a l'écran (entre 1 & 8 ) |
-+--------+-----------------------------------------------------+
-| bbbbb  | nombre de lignes                                    |
-+--------+-----------------------------------------------------+
-| ccc    |                                                     |
-+--------+-----------------------------------------------------+
-| dd     | nombre de caracteres dans le nom du répertoire      |
-+--------+-----------------------------------------------------+
-| e      | nom du répertoire                                   |
-+--------+-----------------------------------------------------+
-| fff    | nombre de caracteres dans l'url de l'image          |
-+--------+-----------------------------------------------------+
-| g      | url de l'image                                      |
-+--------+-----------------------------------------------------+
++--------+----------------------------------------------------+
+| champs | description                                        |
++========+====================================================+
+| aaaaa  | nombre de lignes affichées a l'écran (entre 1 & 8) |
++--------+----------------------------------------------------+
+| bbbbb  | nombre de lignes                                   |
++--------+----------------------------------------------------+
+| ccc    |                                                    |
++--------+----------------------------------------------------+
+| dd     | nombre de caracteres dans le nom du répertoire     |
++--------+----------------------------------------------------+
+| e      | nom du répertoire                                  |
++--------+----------------------------------------------------+
+| fff    | nombre de caracteres dans l'url de l'image         |
++--------+----------------------------------------------------+
+| g      | url de l'image                                     |
++--------+----------------------------------------------------+
 
 
 
@@ -464,7 +464,7 @@ Lecteur CD
 Alimentation
 ~~~~~~~~~~~~
 
-Comme l'amplificateur le lecteur CD a une seule commande pour démarrer et arreter l'appareil sans retourn du status de l'alimentation.
+Comme l'amplificateur le lecteur CD a une seule commande pour démarrer et arreter l'appareil sans retour du status de l'alimentation.
 
 +------------+--------------+
 | ordre      | commande     |

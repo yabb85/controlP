@@ -19,10 +19,10 @@ Problemes connues:
 
 
 Travail en cours:
-    - précharger les menu en arriere plan pour améliorer la navigation.
+    - précharger les menus en arriere plan pour améliorer la navigation.
 
 
-A faire:
+À faire:
     - ajouter un index pour naviguer par lettre si la liste est trop longue
 
 
@@ -35,3 +35,4 @@ La partie la plus importante de cette documentation est l'explication du protoco
    :caption: Contents:
 
    protocol
+   development

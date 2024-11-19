@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ControlP \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-17 23:11+0100\n"
+"POT-Creation-Date: 2024-11-19 22:14+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -28,7 +28,6 @@ msgid "Bienvenue dans la documentation de ControlP !"
 msgstr "Welcome to ControlP's documentation!"
 
 #: ../../source/index.rst:9
-#, fuzzy
 msgid ""
 "Ce projet tente de fournir une interface pour commander votre lecteur "
 "réseau N-50A. Il peut également commander votre amplificateur si un câble"
@@ -69,11 +68,11 @@ msgid "Travail en cours:"
 msgstr "Work in progress:"
 
 #: ../../source/index.rst:22
-msgid "précharger les menu en arriere plan pour améliorer la navigation."
+msgid "précharger les menus en arriere plan pour améliorer la navigation."
 msgstr "preload menu list in background to improve navigation"
 
 #: ../../source/index.rst:25
-msgid "A faire:"
+msgid "À faire:"
 msgstr "Todo"
 
 #: ../../source/index.rst:26
