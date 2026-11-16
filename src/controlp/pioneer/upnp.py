@@ -81,5 +81,9 @@ def ssdp_pioneer_device(urls: set) -> dict:
 
 def scan():
     req = ssdp_request(ST_ROOTDEVICE)
-    urls = ssdp_scan(req)
-    return ssdp_pioneer_device(urls)
+    try:
+        urls = ssdp_scan(req)
+        devices = ssdp_pioneer_device(urls)
+    except OSError:
+        devices = []
+    return devices

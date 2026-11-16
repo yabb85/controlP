@@ -176,6 +176,11 @@ class Pioneer(object):
         # self.socket.setblocking(False)
         self.socket.connect((self.ip, self.port))
 
+    def _reconnect(self):
+        self.close()
+        self._connect()
+        self.power_status()
+
     def _send_command(self, command: str, rep_flag=True):
         """
         Send command on opened socket
@@ -190,9 +195,11 @@ class Pioneer(object):
                 if rep_flag:
                     response = self._read()
             except BrokenPipeError as err:
-                self.close()
-                self._connect()
-                self.power_status()
+                # self.close()
+                # self._connect()
+                # self.power_status()
+                LOGGER.error(f'ControlP Connection failed {err}\n', '-'*50, '*'*50)
+                self._reconnect()
             return response
 
     def _read(self, timeout=None, exception=False):
@@ -210,6 +217,9 @@ class Pioneer(object):
                 response = response.decode('utf-8')
                 # log_debug('_read: response: {}'.format(response))
                 # log_debug(f'_read: reponse size: {len(response)}')
+            except ConnectionAbortedError as err:
+                LOGGER.error(f'ControlP Connection failed {err}\n', '-'*50, '*'*50)
+                self._reconnect()
             except exception_timeout as socket_timeout:
                 if exception:
                     raise

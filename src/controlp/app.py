@@ -112,3 +112,32 @@ class ControlPApp(MDApp):
 
     def set_network_player(self, network_player):
         self.network_player = network_player
+
+    def apply_insets(self) -> None:
+        # always READ (the logged numbers measure the overlap even with padding off); PAD only when `insets`
+        ins = read_insets()
+        top, bottom, left, right = ins if ins is not None else ('n/a',) * 4
+        self.root.padding = [left, top, right, bottom]  # Kivy padding = left, top, right, bottom
+        print(f'STUB insets top={top} bottom={bottom} left={left} right={right} applied={applied}')
+
+
+
+def read_insets():
+    """(top, bottom, left, right) system bar insets in px, or None off Android / before attach."""
+    try:
+        from jnius import autoclass
+    except Exception:  # noqa: BLE001 - desktop
+        return None
+    try:
+        activity = autoclass('org.kivy.android.PythonActivity').mActivity
+        ins = activity.getWindow().getDecorView().getRootWindowInsets()
+        if ins is None:
+            return None
+        if autoclass('android.os.Build$VERSION').SDK_INT >= 30:
+            bars = ins.getInsets(autoclass('android.view.WindowInsets$Type').systemBars())
+            return bars.top, bars.bottom, bars.left, bars.right
+        return (ins.getSystemWindowInsetTop(), ins.getSystemWindowInsetBottom(),
+                ins.getSystemWindowInsetLeft(), ins.getSystemWindowInsetRight())
+    except Exception as e:  # noqa: BLE001 - diagnostics only
+        print('STUB insets error', repr(e))
+        return None
