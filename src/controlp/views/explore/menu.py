@@ -17,6 +17,7 @@ class MenuItem(MDListItem):
     text = StringProperty()
     index = NumericProperty()
     url = StringProperty()
+    ripple_effect = False
 
     def on_release(self, **kwargs):
         # self.parent.parent.parent.explore(self.index)

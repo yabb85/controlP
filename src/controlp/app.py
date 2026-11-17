@@ -1,3 +1,4 @@
+from kivy.clock import Clock
 from kivy.config import Config
 from kivy.core.window import Window
 from kivy.properties import StringProperty
@@ -90,7 +91,16 @@ class ControlPApp(MDApp):
         self.sm.add_widget(self.play_view)
         self.sm.add_widget(self.other_devices_view)
         self.sm.current = 'home'
-        return self.sm
+        # return self.sm
+        # insets fix: Android 15+ (targetSdk 35+) draws the app under the status / navigation bars.
+        # Padding the MDScreenManager does nothing, so the manager sits in a box that gets the padding;
+        # the rest of the app keeps using self.sm. Insets are read at the first frame and again 1 s
+        # later (the window is fully attached by then).
+        self.root_box = MDBoxLayout()
+        self.root_box.add_widget(self.sm)
+        Clock.schedule_once(lambda dt: self.apply_insets(), 0)
+        Clock.schedule_once(lambda dt: self.apply_insets(), 1)
+        return self.root_box
 
     def build_config(self, config):
         config.setdefaults('pioneer',
@@ -114,16 +124,17 @@ class ControlPApp(MDApp):
         self.network_player = network_player
 
     def apply_insets(self) -> None:
-        # always READ (the logged numbers measure the overlap even with padding off); PAD only when `insets`
+        # read the system bar insets (px); pad the root box by them when they are readable
         ins = read_insets()
         top, bottom, left, right = ins if ins is not None else ('n/a',) * 4
-        self.root.padding = [left, top, right, bottom]  # Kivy padding = left, top, right, bottom
-        print(f'STUB insets top={top} bottom={bottom} left={left} right={right} applied={applied}')
-
+        applied = ins is not None
+        if applied:
+            self.root_box.padding = [left, top, right, bottom]  # Kivy padding = left, top, right, bottom
 
 
 def read_insets():
-    """(top, bottom, left, right) system bar insets in px, or None off Android / before attach."""
+    """(top, bottom, left, right) insets in px = system bars + display cutout (max per side), or None
+    off Android / before attach. Also prints `STUB insets parts bars=t,b,l,r cutout=t,b,l,r`."""
     try:
         from jnius import autoclass
     except Exception:  # noqa: BLE001 - desktop
@@ -133,11 +144,24 @@ def read_insets():
         ins = activity.getWindow().getDecorView().getRootWindowInsets()
         if ins is None:
             return None
-        if autoclass('android.os.Build$VERSION').SDK_INT >= 30:
-            bars = ins.getInsets(autoclass('android.view.WindowInsets$Type').systemBars())
-            return bars.top, bars.bottom, bars.left, bars.right
-        return (ins.getSystemWindowInsetTop(), ins.getSystemWindowInsetBottom(),
-                ins.getSystemWindowInsetLeft(), ins.getSystemWindowInsetRight())
+        sdk = autoclass('android.os.Build$VERSION').SDK_INT
+        if sdk >=30:
+            types = autoclass('android.view.WindowInsets$Type')
+            bars_i = ins.getInsets(types.systemBars())
+            cut_i = ins.getInsets(types.displayCutout())
+            both = ins.getInsets(types.systemBars() | types.displayCutout())  # Type ints OR together
+            bars = (bars_i.top, bars_i.bottom, bars_i.left, bars_i.right)
+            cutout = (cut_i.top, cut_i.bottom, cut_i.left, cut_i.right)
+            total = (both.top, both.bottom, both.left, both.right)
+        else:
+            bars = (ins.getSystemWindowInsetTop(), ins.getSystemWindowInsetBottom(),
+                    ins.getSystemWindowInsetLeft(), ins.getSystemWindowInsetRight())
+            dc = ins.getDisplayCutout() if sdk >= 28 else None  # API 28+; None = no cutout
+            cutout = ((dc.getSafeInsetTop(), dc.getSafeInsetBottom(),
+                       dc.getSafeInsetLeft(), dc.getSafeInsetRight()) if dc is not None else (0, 0, 0, 0))
+            total = tuple(max(a, b) for a, b in zip(bars, cutout))
+        print(f'STUB insets parts bars={",".join(map(str, bars))} cutout={",".join(map(str, cutout))}')
+        return total
     except Exception as e:  # noqa: BLE001 - diagnostics only
         print('STUB insets error', repr(e))
         return None

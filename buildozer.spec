@@ -99,7 +99,7 @@ android.permissions = android.permission.INTERNET
 
 # (int) Target Android API, should be as high as possible.
 #android.api = 31
-android.api = 34
+android.api = 36
 
 # (int) Minimum API your APK / AAB will support.
 #android.minapi = 21

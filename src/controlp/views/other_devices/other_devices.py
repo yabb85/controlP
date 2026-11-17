@@ -13,6 +13,7 @@ class OtherDevicesView(MDScreen):
     amplifier_model = ObjectProperty()
     cd_player_controller = ObjectProperty()
     cd_player_model = ObjectProperty()
+    ripple_effect = False
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
