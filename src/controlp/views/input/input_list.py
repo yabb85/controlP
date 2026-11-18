@@ -9,7 +9,6 @@ class InputItem(MDListItem):
     text = StringProperty()
     code = NumericProperty()
     active = BooleanProperty()
-    ripple_effect = False
 
     def on_release(self, **kwargs):
         self.parent.parent.choose_input(self.code)

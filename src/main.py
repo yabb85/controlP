@@ -5,6 +5,7 @@ File created specificly to android version
 from kivy.factory import Factory
 from kivy.graphics import InstructionGroup
 from controlp.app import ControlPApp
+from controlp.patch import disable_gpu_ripple
 
 
 class NoShadow(InstructionGroup):
@@ -34,4 +35,5 @@ def disable_shadows() -> None:
 
 if __name__ == '__main__':
     disable_shadows()
+    disable_gpu_ripple()
     ControlPApp().run()
